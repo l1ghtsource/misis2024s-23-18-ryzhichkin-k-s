@@ -9,6 +9,8 @@
 #include <stdexcept>
 #include <algorithm>
 
+const double PI = 3.14159265358979323846;
+
 struct Complex {
   [[nodiscard]] Complex() = default;
   [[nodiscard]] Complex(const Complex&) = default;

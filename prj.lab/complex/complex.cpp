@@ -179,7 +179,7 @@ std::vector<Complex> root(const Complex& lhs, const int rhs) {
   double argZ = arg(lhs);
   double rootModulus = std::pow(modulusZ, 1.0 / rhs);
   for (int k = 0; k < rhs; ++k) {
-    double rootArg = (argZ + 2 * M_PI * k) / rhs;
+    double rootArg = (argZ + 2 * PI * k) / rhs;
     roots.push_back(Complex(rootModulus * std::cos(rootArg), rootModulus * std::sin(rootArg)));
   }
   return roots;
