@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef STACKARR_HPP
-#define STACKARR_HPP
+#ifndef STACKLST_HPP
+#define STACKLST_HPP
 
 #include <iostream>
 #include <cstddef>
@@ -9,15 +9,14 @@
 #include <complex/complex.hpp>
 #include <complex/complex.cpp>
 
-class StackArr {
+class StackLst {
 public:
-  [[nodiscard]] StackArr() = default;
+  [[nodiscard]] StackLst() = default;
+  [[nodiscard]] StackLst(const StackLst&) = default;
 
-  [[nodiscard]] StackArr(const StackArr&) = default;
+  ~StackLst() = default;
 
-  ~StackArr() = default;
-
-  [[nodiscard]] StackArr& operator=(const StackArr&) = default;
+  [[nodiscard]] StackLst& operator=(const StackLst&) = default;
 
   bool IsEmpty() const noexcept;
 
@@ -31,9 +30,11 @@ public:
   void Clear() noexcept;
 
 private:
-  std::ptrdiff_t size_ = 0;
-  std::ptrdiff_t i_top_ = -1;
-  Complex* data_ = nullptr;
+  struct Node {
+    Complex v;
+    Node* next = nullptr;
+  };
+  Node* head = nullptr;
 };
 
 #endif

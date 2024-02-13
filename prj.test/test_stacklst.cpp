@@ -1,18 +1,18 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 
-#include <stackarr/stackarr.hpp>
-#include <stackarr/stackarr.cpp>
+#include <stacklst/stacklst.hpp>
+#include <stacklst/stacklst.cpp>
 
-TEST_CASE("stackarr ctor") {
-  StackArr stack;
+TEST_CASE("stacklst ctor") {
+  StackLst stack;
   CHECK_EQ(stack.IsEmpty(), 1);
-  StackArr stack_copy(stack);
+  StackLst stack_copy(stack);
   CHECK_EQ(stack_copy.IsEmpty(), 1);
 }
 
 TEST_CASE("push, pop, top, clear") {
-  StackArr stack;
+  StackLst stack;
   CHECK_THROWS(void(stack.Top()));
   stack.Push(Complex(1, 2));
   CHECK_EQ(stack.IsEmpty(), 0);
