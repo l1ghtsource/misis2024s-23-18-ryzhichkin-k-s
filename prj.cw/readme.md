@@ -11,7 +11,7 @@
 ## Использование
 
 ```c
-#include <numbertheory>
+#include "numbertheory.hpp"
 
 // делает что-то
 somefunc(args)
