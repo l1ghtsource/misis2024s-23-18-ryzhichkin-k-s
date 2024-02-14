@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "задача-divisors",
+      "appliesTo": "prj.cw/numbertheory/chapter_1/divisors.cpp",
+      "type": "launch"
+    }
+  ]
+}

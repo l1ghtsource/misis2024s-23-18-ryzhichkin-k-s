@@ -13,5 +13,7 @@ target_link_libraries(test_stackarr stackarr)
 add_executable(test_stacklst test_stacklst.cpp)
 target_link_libraries(test_stacklst stacklst)
 
+add_executable(test_numbertheory test_numbertheory.cpp)
+target_link_libraries(test_numbertheory numbertheory)
 
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT stacklst)
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT numbertheory)
