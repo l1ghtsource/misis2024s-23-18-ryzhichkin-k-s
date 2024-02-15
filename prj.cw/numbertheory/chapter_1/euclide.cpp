@@ -31,8 +31,29 @@ int64_t NumberTheory::Lcm(std::vector<int64_t> numbers) {
   return res;
 }
 
-std::tuple<int64_t, int64_t, int64_t> NumberTheory::ExtEuclide(int64_t a, int64_t m) {
-  return std::tuple<int64_t, int64_t, int64_t>();
+ExtendedEuclideanResult NumberTheory::ExtEuclide(int64_t a, int64_t b) {
+  int64_t x = 0, y = 1, lastX = 1, lastY = 0, temp;
+  while (b != 0) {
+    int64_t quotient = a / b;
+    int64_t remainder = a % b;
+
+    a = b;
+    b = remainder;
+
+    temp = x;
+    x = lastX - quotient * x;
+    lastX = temp;
+
+    temp = y;
+    y = lastY - quotient * y;
+    lastY = temp;
+  }
+
+  ExtendedEuclideanResult result;
+  result.gcd = a;
+  result.x = lastX;
+  result.y = lastY;
+  return result;
 }
 
 std::tuple<int64_t, int64_t> NumberTheory::Diophantus(int64_t a, int64_t b, int64_t c) {

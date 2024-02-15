@@ -13,7 +13,8 @@ chapter_4/quadratic_residue.cpp
 chapter_4/square_free.cpp
 chapter_5/rho_pollard.cpp
 chapter_6/prime_tests.cpp
-all_about.cpp
+other/all_about.cpp
+other/extended_euclidean_result.hpp
 )
 set_property(TARGET numbertheory PROPERTY CXX_STANDARD 20)
 target_include_directories(numbertheory PUBLIC

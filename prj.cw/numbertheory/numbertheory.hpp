@@ -6,6 +6,9 @@
 #include <cmath>
 #include <string>
 
+#include "other/extended_euclidean_result.hpp"
+
+
 class NumberTheory {
 public:
   // наибольший общий делитель двух чисел
@@ -21,7 +24,7 @@ public:
   static int64_t Lcm(std::vector<int64_t > numbers);
 
   // расширенный алгоритм Евклида (нахождение x, y, таких, что ax + by = (a, b))
-  static std::tuple<int64_t, int64_t, int64_t> ExtEuclide(int64_t a, int64_t m);
+  static ExtendedEuclideanResult ExtEuclide(int64_t a, int64_t b);
 
   // решение линейного диофантова уравнения ax + by = c
   static std::tuple<int64_t, int64_t> Diophantus(int64_t a, int64_t b, int64_t c);
@@ -106,4 +109,6 @@ public:
 
   // выводит всю информацию о числе n (ДОБАВИТЬ ЧТО ИМЕННО)
   void AllAbout(int64_t n);
+
+private:
 };
