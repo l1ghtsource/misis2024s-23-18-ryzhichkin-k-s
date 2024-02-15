@@ -1,2 +1,1 @@
-#include "numbertheory.hpp"
-
+#include "../numbertheory.hpp"
