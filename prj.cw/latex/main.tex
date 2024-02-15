@@ -1,0 +1,425 @@
+\documentclass[12pt, a4paper, openany]{book}
+\usepackage{cmap}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage{gensymb} %для значков градуса в нумерации
+\usepackage[left=25mm, top=20mm, right=15mm, bottom=25mm, nohead, footskip=10mm]{geometry} %размер полей
+
+\usepackage{setspace,amssymb,amsfonts,amsmath,mathtext,cite,enumerate,float}
+
+\usepackage[pdftex]{graphicx} %подключение рисунков
+\usepackage{enumerate} %подключение списков
+\graphicspath{{Images/}} %путь к рисункам
+\DeclareGraphicsExtensions{.JPEG} %расширения рисунков
+\usepackage[format=plain,labelsep=endash, font=small]{caption} %для подписей к рисункам
+
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{hyphenat}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage} % Нумерация страниц в верхнем правом углу
+\renewcommand{\headrulewidth}{0pt} % Горизонтальная черта в верхней части страницы
+
+\renewcommand{\theenumi}{\arabic{enumi}}
+\renewcommand{\theenumii}{\arabic{enumii}}
+\renewcommand{\theenumiii}{\arabic{enumiii}}
+\renewcommand{\labelenumi}{\arabic{enumi}.}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.} %вложенные нумерованные списки
+\setlength{\parindent}{1cm} %отступ абзаца
+\renewcommand{\thesection}{\normalsize \arabic{section}.}
+\renewcommand{\thesubsection}{\normalsize \arabic{section}.\normalsize \arabic{subsection}.}
+\renewcommand{\thesubsubsection}{\normalsize \arabic{section}.\normalsize \arabic{subsection}.\normalsize \arabic{subsubsection}.}
+\linespread{1.3} %межстрочный интервал
+    
+\usepackage{tocloft}
+
+\usepackage{titlesec}
+
+\titleformat{\chapter}[display]
+  {\centering\bfseries\Huge}
+  {\chaptertitlename\ \thechapter}
+  {20pt}
+  {}
+
+\titleformat{name=\section,numberless}[display]
+  {\centering\bfseries}
+  {}
+  {0pt}
+  {}
+
+\usepackage{amsthm}
+\usepackage{titlesec}
+\usepackage{titletoc}
+
+\usepackage{listings}
+
+\usepackage{amssymb} % Для символа пустого квадратика
+\renewcommand\qedsymbol{\ensuremath{\blacksquare}} % Закрашенный квадратик
+
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{array}
+
+
+
+\newtheorem*{definition}{Определение}
+\newtheorem*{statement}{Утверждение}
+\title{Алгоритмы теории чисел}
+\author{Рыжичкин Кирилл}
+\date{Февраль 2024}
+\renewcommand{\cftsecfont}{\bfseries}
+
+\begin{document}
+\maketitle
+\lstset{language=C++}
+
+\tableofcontents
+
+\newpage
+\section*{Введение}
+\addcontentsline{toc}{section}{Введение}{}
+
+Мир алгоритмов теории чисел представляет собой захватывающий путь в глубины математического мира, где числа становятся не только абстрактными сущностями, но и основой для разработки эффективных алгоритмов. Теория чисел, одна из старейших областей математики, занимается изучением свойств целых чисел и их взаимосвязей. Вместе с тем, алгоритмы теории чисел играют критическую роль в современном мире, находя применение в широком спектре областей, включая криптографию, компьютерные науки, теорию игр и многое другое.
+
+Мы начнем с основных понятий, таких как простые числа, делители, наибольший общий делитель и модульная арифметика, и постепенно углубимся в более сложные темы, такие как теорема Эйлера, китайская теорема об остатках, алгоритмы факторизации и многое другое.
+
+% ГЛАВА 1
+\chapter[Простейшие алгоритмы теории чисел]{Простейшие алгоритмы теории чисел}
+\section{Простые числа}
+
+\begin{definition}
+Натуральное число p называется простым (англ. prime number), если p>1 и p не имеет натуральных делителей, отличных от 1 и p.
+\end{definition}
+
+\begin{definition}
+Натуральное число n > 1 называется составным (англ. composite number), если n имеет по крайней мере один натуральный делитель, отличный от 1 и n.
+\end{definition}
+
+\noindent
+Согласно определениям, множество натуральных чисел разбивается на 3 подмножества:
+
+\begin{enumerate}
+    \item Простые числа.
+    \item Составные числа.
+    \item Число 1, которое не причисляется ни к простым, ни к составным числам.
+\end{enumerate}
+
+Отсюда сразу возникает идея реализации интуитивно понятного алгоритма проверки числа n на простоту: если n = 1, вернуть false, иначе пройтись по всем числам от 2 до n - 1, и если ни на одно из них число не поделится, то вернуть true. Соответственно сложность такого алгоритма будет $O({n})$.
+
+\newpage
+\noindent
+Посмотрим на реализацию такого простейшего алгоритма:
+
+\begin{lstlisting}
+bool isPrime(int n) {
+    if (n == 1) {
+        return false;
+    }
+    for (int i = 2; i < n; i++) {
+        if (n % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+\end{lstlisting}
+
+\begin{statement}
+Пусть $N=a \times b$, причем $a \leq b$. Тогда $a \leq \sqrt{N} \leq \boldsymbol{b}$
+\end{statement}
+
+\begin{proof}
+Eсли $a \leq b<\sqrt{N}$, то $a b \leq b^2<N$, но $a b=N$. А если $\sqrt{N}<a \leq b$, то $N<a^2 \leq a b$, но $a b=N$.
+\end{proof}
+
+Из этого следует, что если число $N$ не делится ни на одно из чисел $2,3,4, \ldots,\lfloor\sqrt{N}\rfloor$, то оно не делится и ни на одно из чисел $\lceil\sqrt{N}\rceil+1, \ldots, N-2, N-1$, так как если есть делитель больше корня (не равный $N$), то есть делитель и меньше корня (не равный 1). Поэтому в цикле for достаточно проверять числа не до $N$, а до корня. Соответственно сложность такого алгоритма будет уже $O(\sqrt{n})$:
+
+\begin{lstlisting}
+bool isPrime(int n) {
+    if (n == 1) {
+        return false;
+    }
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+\end{lstlisting}
+
+Однако и этот алгоритм вовсе не оптимален и на практике применяется разве что на маленьких числах. Более оптимальные алгоритмы проверки на простоту будут расмотрены в следующих главах.
+
+\newpage
+\section{НОД и НОК двух чисел}
+
+\begin{definition}
+Наибольший общий делитель (НОД) двух натуральных чисел \(a\) и \(b\) это наибольшее натуральное число \(d\), которое делит оба числа \(a\) и \(b\) без остатка. Обозначается как \(d = \text{НОД}(a, b)\).
+\end{definition}
+
+\begin{statement}
+Для любых двух натуральных чисел $a > b$ верно следующее равенство:
+\begin{equation*}
+\text{НОД}(a, b) = \text{НОД}(a - b, b).
+\end{equation*}
+\end{statement}
+
+\begin{proof}
+$n=$ \text{НОД}$(a, b) - $ наибольший среди всех общих делителей чисел $a$ и $b$, тогда $a$ $\vdots$ $n$ и $b$ $\vdots$ $n$.
+Отсюда $a-b$ $\vdots$ $n$, значит, $n$ - делитель $a-b$ и $b$, он не превосходит наибольшего из всех общих делителей чисел $a-b$ и $b$, т.е. $n \leqslant m=$ $\text{НОД}$(a, b). Аналогично, рассуждая получаем, что $a-b$ $\vdots$ $m$ и $b$ $\vdots$ $m=$ $\text{НОД}$(a, b). Отсюда $a=(a-b)+b$ $\vdots$ $m$ значит, $m$ - делитель $a$ и $b$, он не превосходит наибольшего и всех общих делителей чисел $a$ и $b$, т.е. $m \leqslant n=$ \text{НОД}$(a, b)$. Таким образом получаем $m \leqslant n \leqslant m$, т.е. \text{НОД}$(a, b)=n=m=$ \text{НОД}$(a-b, b)$.
+\end{proof}
+
+\noindent
+Ход алгоритма Евклида:
+
+\begin{enumerate}
+  \item \textbf{Инициализация}: Начнем с двух целых чисел $a$ и $b$, где $a \geq b$.
+  
+  \item \textbf{Шаг 1}: Разделим $a$ на $b$ и найдем остаток от деления. Пусть остаток обозначается как $r$. То есть, $a = bq_1 + r$, где $q_1$ - частное, а $r$ - остаток.
+  
+  \item \textbf{Шаг 2}: Если остаток $r$ равен нулю, то \text{НОД}$(a-b, b)$ равен $b$, и алгоритм завершается.
+  
+  \item \textbf{Шаг 3}: Если остаток $r$ не равен нулю, заменим $a$ на $b$ и $b$ на $r$, и вернемся к \textbf{шагу 1}.
+  
+  \item \textbf{Шаг 4}: Повторяем процесс, пока остаток $r$ не станет равным нулю. Когда это произойдет, \text{НОД}$(a, b)$ будет равен последнему ненулевому остатку, который был получен на предыдущем шаге.
+  
+  \item \textbf{Вывод результата}: Когда остаток становится равным нулю, последнее значение $b$ будет искомым \text{НОД}$(a, b)$.
+\end{enumerate}
+
+Алгоритм Евклида гарантирует, что за конечное число шагов мы получим \text{НОД}$(a, b)$, так как на каждом шаге остаток уменьшается и стремится к нулю.
+
+\newpage
+
+\noindent
+Реализация алгоритма на C++:
+
+\begin{lstlisting}
+int64_t NumberTheory::Gcd(int64_t a, int64_t b) {
+  while (b != 0) {
+    int64_t temp = b;
+    b = a % b;
+    a = temp;
+  }
+  return a;
+}
+\end{lstlisting}
+
+\begin{definition}
+Наименьшее общее кратное (НОК) двух натуральных чисел \(a\) и \(b\) это наименьшее натуральное число \(l\), которое делится на оба числа \(a\) и \(b\) без остатка. Обозначается как \(l = \text{НОК}(a, b)\).
+\end{definition}
+
+\begin{statement}
+$\forall a, b \in \mathbb{N}$:
+$\text{НОД}(a, b) \cdot \text{НОК}(a, b) = ab.$
+\end{statement}
+\begin{proof}
+\noindent
+Во время доказательства нам пригодится следующее простое свойство:
+$$
+\min (n ; m)+\max (n ; m)=n+m .
+$$
+\noindent
+Оно верно, т.к. $\min (n, m)$ совпадает с одним из чисел $n$ или $m$, $\operatorname{a }$ $\max (n, m)$ с другим.
+Запишем каноническое разложение на простые множители чисел $a$ и $b$ :
+$$
+a=p_1^{n_1} p_2^{n_2} \ldots p_k^{n_k} \text { и } b=p_1^{m_1} p_2^{m_2} \ldots p_k^{m_k}
+$$
+(возможно, что степени некоторых простых нулевые, т.е. простое число входит в разложение одного из чисел $a$ или $b$ на простые множители, но не входит в разложение второго). Запишем теперь разложение НОД $(a, b)$ и НОК $(a, b)$ :
+$$
+\begin{aligned}
+& \text {НОД}(a, b)=p_1^{\min \left\{n_1, m_1\right\}} p_2^{\min \left\{n_2, m_2\right\}} \ldots p_k^{\min \left\{n_k, m_k\right\}} \\
+& \text {НОК}(a, b)=p_1^{\max \left\{n_1, m_1\right\}} p_2^{\max \left\{n_2, m_2\right\}} \ldots p_k^{\max \left\{n_k, m_k\right\}}
+\end{aligned}
+$$
+\noindent
+То есть
+$$
+\begin{gathered}
+\text {НОД}(a, b) \cdot \operatorname{HOK}(a, b)=\prod_{i=1}^k p_i^{\min \left\{n_i, m_i\right\}+\max \left\{n_i, m_i\right\}}=
+\end{gathered}
+$$
+\noindent
+в силу свойства, указанного в самом начале доказательства, получаем
+$$
+=\prod_{i=1}^k p_i^{n_i + m_i}=\prod_{i=1}^k p_i^{n_i}\prod_{i=1}^k p_i^{m_i}=a b .
+$$
+\end{proof}
+
+\newpage
+\noindent
+Отсюда алгоритм нахождения получается элементарным:
+\begin{lstlisting}
+int64_t NumberTheory::Lcm(int64_t a, int64_t b) {
+  return a * b / Gcd(a, b);
+}
+\end{lstlisting}
+
+\section{НОД и НОК n чисел}
+
+Алгоритм Евклида для нескольких чисел использует основное свойство наибольшего общего делителя: если $d$ делит каждое из чисел $a_1, a_2, …, a_n$, то $d$ также делит и их НОД.
+
+\vspace{12pt}\noindentХод алгоритма Евклида для n чисел:
+
+\begin{enumerate}
+    \item \textbf{Инициализация:} Пусть у нас есть набор чисел \(a_1, a_2, \ldots, a_n\).
+    \item \textbf{Нахождение НОДа для первых двух чисел:}
+    \[ d_1 = \text{НОД}(a_1, a_2) \]
+    \item \textbf{Обновление НОДа для следующих чисел:} \\
+    Для каждого \(i = 3, 4, \ldots, n\):
+    \[ d_i = \text{НОД}(d_{i-1}, a_i) \]
+    \item \textbf{Конечный результат:} \\
+    Наибольший общий делитель всех чисел: НОД\((a_1, a_2, \ldots, a_n) = d_n\).
+\end{enumerate}
+
+Поскольку $d_1$ является НОДом $a_1$ и $a_2$, он является делителем обоих этих чисел. Следовательно, $d_1$ делит оба числа нацело.
+
+Когда мы переходим к следующему числу $a_i$, мы находим НОД между текущим НОДом $d_{i-1}$ и $a_i$. Это значит, что $d_{i-1}$ делит $a_i$ и $d_{i-1}$ нацело. Поскольку $d_{i-1}$ также является НОДом всех предыдущих чисел, он делит все предыдущие числа нацело. Таким образом, $d{i-1}$ делит $a_i$ и все предыдущие числа нацело.
+
+Стало быть, после обработки всех чисел мы получаем $d_n$, который является НОДом всех чисел $a_1, a_2, …,a_n$.
+
+\newpage
+\noindent
+Реализация данного алгоритма на C++:
+
+\begin{lstlisting}
+int64_t NumberTheory::Gcd(std::vector<int64_t> numbers) {
+  int64_t res = numbers[0];
+  for (int i = 1; i < numbers.size(); ++i) {
+    res = Gcd(res, numbers[i]);
+  }
+  return res;
+}
+\end{lstlisting}
+
+\noindent
+Абсолютно аналогично получается алгоритм для нахождения НОКа нескольких чисел:
+
+\begin{lstlisting}
+int64_t NumberTheory::Lcm(std::vector<int64_t> numbers) {
+  int64_t res = numbers[0];
+  for (int i = 1; i < numbers.size(); ++i) {
+    res = Lcm(res, numbers[i]);
+  }
+  return res;
+}
+\end{lstlisting}
+
+\section{Расширенный алгоритм Евклида}
+
+\begin{statement}
+$\forall a, b \in \mathbb{Z} \mid \text{НОД}(a, b) = d, \exists x, y \in \mathbb{Z}: ax + by = d$.
+\end{statement}
+
+Основная идея расширенного алгоритма Евклида заключается в том, что мы можем выразить НОД двух чисел $a$ и $b$ через их линейную комбинацию, то есть такие целые числа $x$ и $y$, что $ax + by = \text{НОД}(a, b)$. Это следует из того факта, что множество всех линейных комбинаций $a$ и $b$ образует идеал в кольце $\mathbb{Z}$, а значит, содержит их НОД.
+
+Будем считать, что у нас есть структура ExtendedEuclideanResult, которая хранит НОД(a, b), а также коэффициенты x, y, тогда расширенный алгоритм Евклида на C++ будет выглядеть так:
+
+\newpage
+\begin{lstlisting}[breaklines=true]
+struct ExtendedEuclideanResult {
+  ExtendedEuclideanResult(int64_t gcd, int64_t x, int64_t y) : gcd(gcd), x(x), y(y) {}
+  ~ExtendedEuclideanResult() = default;
+
+  int64_t gcd;
+  int64_t x;
+  int64_t y;
+
+  friend std::ostream& operator<<(std::ostream& os, const ExtendedEuclideanResult& result) {
+    os << "GCD:" << result.gcd << ",x:" << result.x << ",y:" << result.y;
+    return os;
+  }
+};
+
+ExtendedEuclideanResult NumberTheory::ExtEuclide(int64_t a, int64_t b) {
+  int64_t x = 0, y = 1, lastX = 1, lastY = 0, temp;
+  while (b != 0) {
+    int64_t quotient = a / b;
+    int64_t remainder = a % b;
+
+    a = b;
+    b = remainder;
+
+    temp = x;
+    x = lastX - quotient * x;
+    lastX = temp;
+
+    temp = y;
+    y = lastY - quotient * y;
+    lastY = temp;
+  }
+
+  return ExtendedEuclideanResult(a, lastX, lastY);
+}
+\end{lstlisting}
+
+\section{Линейные диофантовы уравнения с двумя
+неизвестными}
+
+Пусть нам дано уравнение $ax + by = c$, где $a, b, c \in \mathbb{Z}$.
+
+Заметим, что левая часть уравнения делится на $\text{НОД}(a, b)$, значит $c$ обязано делиться на $\text{НОД}(a, b)$, чтобы решение существовало.
+
+Если $\text{НОД}(a, b) \mid c$, то поделим обе части на этот НОД, получим новое уравнение $a^{'}x + b^{'}y = c^{'}$, где $\text{НОД}(a^{'}, b^{'}) = 1$.
+
+Пусть мы угадали какое-то решение $(x_0, y_0)$ этого уравнения. Так как $a^{'}x_0 + b^{'}y_0 = c^{'}$, то для любой пары $(x, y)$ получим $a^{'}x + b^{'}y = a^{'}x_0 + b^{'}y_0$. Получим $a^{'}(x - x_0) = b^{'}(y-y_0)$.
+
+Так как $\text{НОД}(a^{'}, b^{'}) = 1$, то $b \mid x - x_0$, обозначим $x - x_0 = kb^{'}$, тогда $y - y_0 = ka^{'}$.
+
+\noindent
+В итоге получаем множество решений $(x, y) = (x_0 + kb^{'}, y_0 - ka^{'})$, где $k \in \mathbb{Z}$.
+
+Угадать решение уравнения $a^{'}x + b^{'}y = c^{'}$, где $\text{НОД}(a^{'}, b^{'}) = 1$ можно с помощью алгоритма Евклида. Сначала найдем решение $(x_0, y_0)$ уравнения $a^{'}x + b^{'}y = 1$ (это можно сделать в силу утверждения со стр. 9), тогда $(cx_0, cy_0)$ - решение уравнения $a^{'}x + b^{'}y = c^{'}$.
+
+Соответственно получам алгоритм решиния линейного диофантова уравнения с двумя неизвестными:
+
+\begin{enumerate}
+    \item \textbf{Проверка существования решений:} Проверям, делится ли правая часть уравнения на $\text{НОД}(a, b)$, если да - идём дальше, если нет - решения отсутствуют.
+    \item \textbf{Нахождение одного частного решения:} Применяя алгоритм Евклида, находим частное решение $(x_0, y_0)$ уравнения $ax + by = c$.
+    \item \textbf{Нахождение общего решения:} Общее решение линейного диофантова уравнения может быть представлено в виде \\
+    \[(x_0 + \frac{b}{\text{НОД}(a, b)} t, y_0 - \frac{a}{\text{НОД}(a, b)} t), t \in \mathbb{Z}\]
+\end{enumerate}
+
+\newpage
+\noindent
+Так выглядит реализация данного алгоритма на C++:
+
+\begin{lstlisting}[breaklines=true]
+struct DiophantusResult {
+  DiophantusResult() = default;
+  DiophantusResult(int64_t x, int64_t y, int64_t k_1, int64_t k_2) : x(x), y(y), k_1(k_1), k_2(k_2), s("good") {}
+  ~DiophantusResult() = default;
+
+  int64_t x = 0;
+  int64_t y = 0;
+  int64_t k_1 = 0;
+  int64_t k_2 = 0;
+  std::string s = "none";
+
+  friend std::ostream& operator<<(std::ostream& os, const DiophantusResult& result) {
+    if (result.s == "good") {
+      os << "(x,y)=" << "(" << result.x << "+" << result.k_1 << "t," << result.y << "-" << result.k_2 << "t)";
+    }
+    else {
+      os << "None";
+    }
+    return os;
+  }
+};
+
+DiophantusResult NumberTheory::Diophantus(int64_t a, int64_t b, int64_t c) {
+  ExtendedEuclideanResult result = ExtEuclide(a, b);
+
+  int64_t g = result.gcd;
+  if (c % g != 0) {
+    return DiophantusResult();
+  }
+  
+  int64_t k = c / g;
+  return DiophantusResult(k * result.x, k * result.y, b / g, a / g);
+}
+\end{lstlisting}
+
+\end{document}
