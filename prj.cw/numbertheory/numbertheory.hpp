@@ -38,6 +38,9 @@ public:
   // нахождение степени вхождения просто числа p в n!
   static int64_t PrimePowerInFactorial(int64_t n, int64_t p);
 
+  // решето Эратосфена (получение всех простых чисел, меньших n)
+  static std::vector<int64_t> SieveOfEratosthenes(int64_t n);
+
   // решение линейного сравнения ax = b (mod m) по заданному модулю 
   static std::vector<int64_t> SolveLinearCongruence(int64_t a, int64_t b, int64_t m);
 
@@ -46,9 +49,6 @@ public:
 
   // решение систем сравнений вида x = a_i (mod m_i)
   static std::vector<int64_t> SolveLinearCongruenceSystem(std::vector<int64_t>& a, std::vector<int64_t>& m);
-
-  // решето Эратосфена (получение всех простых чисел, меньших n)
-  static std::vector<int64_t> SieveOfEratosthenes(int64_t n);
 
   // функция Эйлера (количество чисел x таких, что (n, x) = 1, x < n)
   static int64_t Phi(int64_t n);

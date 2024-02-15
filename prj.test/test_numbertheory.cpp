@@ -1,5 +1,15 @@
 ﻿#include "../prj.cw/numbertheory/numbertheory.hpp"
 
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
+  os << "[ ";
+  for (const auto& element : vec) {
+    os << element << " ";
+  }
+  os << "]";
+  return os;
+}
+
 int main() {
   NumberTheory NT = NumberTheory();
 
@@ -19,6 +29,8 @@ int main() {
   std::cout << NT.DivisorsSum(25, "enum") << std::endl;
 
   std::cout << NT.PrimePowerInFactorial(6, 2) << std::endl;
+
+  std::cout << NT.SieveOfEratosthenes(100) << std::endl;
 
   return 0;
 }
