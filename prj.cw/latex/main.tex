@@ -63,8 +63,6 @@
 \usepackage{tikz}
 \usepackage{array}
 
-
-
 \newtheorem*{definition}{Определение}
 \newtheorem*{statement}{Утверждение}
 \title{Алгоритмы теории чисел}
@@ -399,12 +397,25 @@ struct DiophantusResult {
   std::string s = "none";
 
   friend std::ostream& operator<<(std::ostream& os, const DiophantusResult& result) {
-    if (result.s == "good") {
-      os << "(x,y)=" << "(" << result.x << "+" << result.k_1 << "t," << result.y << "-" << result.k_2 << "t)";
+    std::string sign_1 = "+";;
+    std::string sign_2 = "-";
+
+    if (result.k_1 < 0) {
+      sign_1 = "-";
     }
+
+    if (result.k_2 < 0) {
+      sign_2 = "+";
+    }
+
+    if (result.s == "good") {
+      os << "(x,y)=" << "(" << result.x << sign_1 << std::abs(result.k_1) << "t," << result.y << sign_2 << std::abs(result.k_2) << "t)";
+    }
+
     else {
       os << "None";
     }
+
     return os;
   }
 };
@@ -413,13 +424,125 @@ DiophantusResult NumberTheory::Diophantus(int64_t a, int64_t b, int64_t c) {
   ExtendedEuclideanResult result = ExtEuclide(a, b);
 
   int64_t g = result.gcd;
+
   if (c % g != 0) {
-    return DiophantusResult();
+    return DiophantusResult(); 
   }
-  
+
   int64_t k = c / g;
+
   return DiophantusResult(k * result.x, k * result.y, b / g, a / g);
 }
 \end{lstlisting}
 
+\section{Количество/сумма делителей числа}
+
+Алгоритм нахожденгия количества/суммы делителей числа можно реализовать элементарным перебором делителей. Сложность такого алгоритма будет $\text{O}(\sqrt{n})$. 
+
+\noindent
+Рассмотрим такие алгоритмы:
+
+\begin{lstlisting}[breaklines=true]
+int64_t NumberTheory::DivisorsCount(int64_t n) {
+  n = std::abs(n);
+  int64_t count = 0;
+  for (int64_t i = 1; i <= static_cast<int64_t>(std::sqrt(n)); ++i) {
+    if (n % i == 0) {
+      count += (i == n / i) ? 1 : 2;
+    }
+  }
+  return count;
+}
+\end{lstlisting}
+
+\newpage
+\begin{lstlisting}[breaklines=true]
+int64_t NumberTheory::DivisorsSum(int64_t n) {
+  for (int64_t i = 1; i <= static_cast<int64_t>(std::sqrt(n)); ++i) {
+    if (n % i == 0) {
+      sum += i;
+      if (i != n / i) {
+        sum += n / i;
+      }
+    }
+  }
+  return sum;
+}
+\end{lstlisting}
+
+Однакого количество/сумма делителей любого числа легко выражается через его разложение на простые множители. Соответственно если мы реализуем факторизацию со сложностью, меньшей чем $\text{O}(\sqrt{n})$, то получим более оптимальный алгоритм. Такие факторизации будут расмотрены в слудющих главах, а пока будем считать, что у нас есть такой алгоритм разложения на простые множители и получим формулы количества и суммы делителей числа.
+
+\noindent
+Пусть дано целое число $ n $ с разложением на простые множители:
+\[n = p_1^{a_1} \times p_2^{a_2} \times \ldots \times p_k^{a_k},\]
+\noindent
+где $ p_1, p_2, \ldots, p_k $ - простые числа (не обязательно различные), а $ a_1, a_2, \ldots, a_k $ - их показатели степени.
+
+\begin{statement}
+Пусть $\tau(n)$ обозначает количество положительных делителей числа $n$. Тогда $\tau(n) = (a_1 + 1) \times (a_2 + 1) \times \ldots \times (a_k + 1)$.
+\end{statement}
+
+\begin{proof}
+Каждый делитель числа $ n $ имеет вид:
+\[ d = p_1^{b_1} \times p_2^{b_2} \times \ldots \times p_k^{b_k},\]
+\noindent
+где $ 0 \leq b_i \leq a_i $ для $ i = 1, 2, \ldots, k $. Чтобы получить все делители числа $ n $, мы можем взять каждый из $ k $ простых множителей и выбрать любую комбинацию показателей степени от 0 до $ a_i $. Таким образом, общее количество делителей числа $ n $:
+\[\tau(n) = (a_1 + 1) \times (a_2 + 1) \times \ldots \times (a_k + 1)\].
+\end{proof}
+
+\newpage
+
+\begin{statement}
+Пусть $\sigma(n)$ обозначает сумму положительных делителей числа $n$. Тогда \[
+\sigma(n) = \frac{{p_1^{a_1+1} - 1}}{{p_1 - 1}} \cdot \frac{{p_2^{a_2+1} - 1}}{{p_2 - 1}} \cdot \ldots \cdot \frac{{p_k^{a_k+1} - 1}}{{p_k - 1}}
+\]
+\end{statement}
+
+\begin{proof}
+Cумма делителей числа \( n \) может быть выражена как произведение всех возможных комбинаций делителей:
+\[
+\sigma(n) = (1 + p_1 + p_1^2 + \ldots + p_1^{a_1}) \cdot (1 + p_2 + p_2^2 + \ldots + p_2^{a_2}) \cdot \ldots \cdot (1 + p_k + p_k^2 + \ldots + p_k^{a_k})
+\]
+\noindent
+Cумма геометрической прогрессии имеет вид:
+\[
+1 + p^1 + p^2 + \ldots + p^m = \frac{{p^{m+1} - 1}}{{p - 1}}
+\]
+\noindent
+Подставляя это обратно в наше уравнение, получаем требуемое равенство.
+\end{proof}
+
+\section{Степень вхождения простого числа в факториал}
+
+\begin{statement}
+Пусть $\text{ord}_p(n!)$ обозначает степень вхождения простого числа $p$ в $n!$. Тогда
+\[\text{ord}_p(n!) = \sum_{i=1}^{\infty} \left\lfloor \frac{n}{p^i} \right\rfloor\]
+\end{statement}
+
+\begin{proof}
+\[n! = 1 \times 2 \times 3 \times \ldots \times (n-1) \times n\]
+
+Каждый $p$-ый член этого произведения делится на $p$, т.е. даёт +1 к ответу, количество таких членов равно $\left\lfloor \frac{n}{p} \right\rfloor.$
+
+Далее, заметим, что каждый $p^2$-ый член этого ряда делится на $p^2$, т.е. даёт ещё +1 к ответу (учитывая, что $p$ в первой степени уже было учтено до этого); количество таких членов равно $\left\lfloor \frac{n}{p^2} \right\rfloor$.
+
+И так далее, каждый $p^i$-ый член ряда даёт +1 к ответу, а количество таких членов равно $\left\lfloor \frac{n}{p^i} \right\rfloor.$
+
+Таким образом, \[\text{ord}_p(n!) = \left\lfloor\frac{n}{p}\right\rfloor + \left\lfloor\frac{n}{p^2}\right\rfloor + \ldots + \left\lfloor\frac{n}{p^i}\right\rfloor + \ldots\].
+\end{proof}
+
+\newpage
+
+\noindent
+Реализация данного алгоритма на C++:
+\begin{lstlisting}[breaklines=true]
+int64_t NumberTheory::PrimePowerInFactorial(int64_t n, int64_t p) {
+	int64_t res = 0;
+	while (n) {
+		n /= p;
+		res += n;
+	}
+	return res;
+}
+\end{lstlisting}
 \end{document}

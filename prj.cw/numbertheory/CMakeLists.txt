@@ -16,7 +16,7 @@ chapter_6/prime_tests.cpp
 other/all_about.cpp
 other/extended_euclidean_result.hpp
 other/diophantus_result.hpp
-)
+ "chapter_6/sqrt_test.cpp" "chapter_6/fermat.cpp" "chapter_6/frobenius.cpp" "chapter_6/millerrabin.cpp" "chapter_6/bpsw.cpp")
 set_property(TARGET numbertheory PROPERTY CXX_STANDARD 20)
 target_include_directories(numbertheory PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>

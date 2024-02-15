@@ -12,12 +12,25 @@ struct DiophantusResult {
   std::string s = "none";
 
   friend std::ostream& operator<<(std::ostream& os, const DiophantusResult& result) {
-    if (result.s == "good") {
-      os << "(x, y) = " << "(" << result.x << " + " << result.k_1 << "t, " << result.y << " - " << result.k_2 << "t)";
+    std::string sign_1 = " + ";;
+    std::string sign_2 = " - ";
+
+    if (result.k_1 < 0) {
+      sign_1 = " - ";
     }
+
+    if (result.k_2 < 0) {
+      sign_2 = " + ";
+    }
+
+    if (result.s == "good") {
+      os << "(x, y) = " << "(" << result.x << sign_1 << std::abs(result.k_1) << "t, " << result.y << sign_2 << std::abs(result.k_2) << "t)";
+    }
+
     else {
       os << "There is no integer solutions :(";
     }
+
     return os;
   }
 };

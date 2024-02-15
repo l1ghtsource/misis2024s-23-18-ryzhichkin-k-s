@@ -17,6 +17,7 @@ int64_t NumberTheory::Lcm(int64_t a, int64_t b) {
 
 int64_t NumberTheory::Gcd(std::vector<int64_t> numbers) {
   int64_t res = numbers[0];
+
   for (int i = 1; i < numbers.size(); ++i) {
     res = Gcd(res, numbers[i]);
   }
@@ -25,6 +26,7 @@ int64_t NumberTheory::Gcd(std::vector<int64_t> numbers) {
 
 int64_t NumberTheory::Lcm(std::vector<int64_t> numbers) {
   int64_t res = numbers[0];
+
   for (int i = 1; i < numbers.size(); ++i) {
     res = Lcm(res, numbers[i]);
   }
@@ -33,6 +35,7 @@ int64_t NumberTheory::Lcm(std::vector<int64_t> numbers) {
 
 ExtendedEuclideanResult NumberTheory::ExtEuclide(int64_t a, int64_t b) {
   int64_t x = 0, y = 1, lastX = 1, lastY = 0, temp;
+
   while (b != 0) {
     int64_t quotient = a / b;
     int64_t remainder = a % b;
