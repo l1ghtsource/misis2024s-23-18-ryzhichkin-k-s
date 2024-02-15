@@ -1,7 +1,7 @@
 #include <iostream>
 
 struct ExtendedEuclideanResult {
-  ExtendedEuclideanResult() = default;
+  ExtendedEuclideanResult(int64_t gcd, int64_t x, int64_t y) : gcd(gcd), x(x), y(y) {}
   ~ExtendedEuclideanResult() = default;
 
   int64_t gcd; // мнд(a, b)
@@ -12,5 +12,4 @@ struct ExtendedEuclideanResult {
     os << "GCD: " << result.gcd << ", x: " << result.x << ", y: " << result.y;
     return os;
   }
-
 };

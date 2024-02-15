@@ -49,11 +49,7 @@ ExtendedEuclideanResult NumberTheory::ExtEuclide(int64_t a, int64_t b) {
     lastY = temp;
   }
 
-  ExtendedEuclideanResult result;
-  result.gcd = a;
-  result.x = lastX;
-  result.y = lastY;
-  return result;
+  return ExtendedEuclideanResult(a, lastX, lastY);
 }
 
 std::tuple<int64_t, int64_t> NumberTheory::Diophantus(int64_t a, int64_t b, int64_t c) {

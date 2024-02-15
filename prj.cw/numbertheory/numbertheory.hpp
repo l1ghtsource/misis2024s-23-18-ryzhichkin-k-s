@@ -8,7 +8,6 @@
 
 #include "other/extended_euclidean_result.hpp"
 
-
 class NumberTheory {
 public:
   // наибольший общий делитель двух чисел
@@ -109,6 +108,4 @@ public:
 
   // выводит всю информацию о числе n (ДОБАВИТЬ ЧТО ИМЕННО)
   void AllAbout(int64_t n);
-
-private:
 };
