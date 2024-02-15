@@ -52,6 +52,16 @@ ExtendedEuclideanResult NumberTheory::ExtEuclide(int64_t a, int64_t b) {
   return ExtendedEuclideanResult(a, lastX, lastY);
 }
 
-std::tuple<int64_t, int64_t> NumberTheory::Diophantus(int64_t a, int64_t b, int64_t c) {
-  return std::tuple<int64_t, int64_t>();
+DiophantusResult NumberTheory::Diophantus(int64_t a, int64_t b, int64_t c) {
+  ExtendedEuclideanResult result = ExtEuclide(a, b);
+
+  int64_t g = result.gcd;
+
+  if (c % g != 0) {
+    return DiophantusResult(); // нет решений
+  }
+
+  int64_t k = c / g;
+
+  return DiophantusResult(k * result.x, k * result.y, b / g, a / g);
 }

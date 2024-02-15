@@ -7,6 +7,7 @@
 #include <string>
 
 #include "other/extended_euclidean_result.hpp"
+#include "other/diophantus_result.hpp"
 
 class NumberTheory {
 public:
@@ -26,7 +27,7 @@ public:
   static ExtendedEuclideanResult ExtEuclide(int64_t a, int64_t b);
 
   // решение линейного диофантова уравнения ax + by = c
-  static std::tuple<int64_t, int64_t> Diophantus(int64_t a, int64_t b, int64_t c);
+  static DiophantusResult Diophantus(int64_t a, int64_t b, int64_t c);
 
   // решение линейного сравнения ax = b (mod m) по заданному модулю 
   static std::vector<int64_t> SolveLinearCongruence(const int64_t& a, const int64_t& b, const int64_t& m);
