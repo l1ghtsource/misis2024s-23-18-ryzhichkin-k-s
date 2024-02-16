@@ -19,14 +19,22 @@ def parse_latex_toc(tex_file_path):
     return toc
 
 
-def write_toc_to_txt(toc, output_file):
-    with open(output_file, 'w', encoding='utf-8') as file:
-        for level, title in toc:
-            file.write('    ' * (level - 1) + title + '\n')
+def write_toc_to_md(toc, readme_file_path):
+    with open(readme_file_path, 'r', encoding='utf-8') as file:
+        readme_content = file.read()
+
+    toc_md = 'Текущая структура:\n\n'
+    for level, title in toc:
+        toc_md += '    ' * (level - 1) + '- ' + title + '\n'
+
+    updated_readme_content = re.sub(r'Текущая структура:\n\n(?:.*\n)*', toc_md, readme_content)
+
+    with open(readme_file_path, 'w', encoding='utf-8') as file:
+        file.write(updated_readme_content)
 
 
 if __name__ == '__main__':
-    latex_file_path = 'example.tex'
-    output_txt_file = 'toc.txt'
+    latex_file_path = r'..\main.tex'
+    readme_file_path = r'..\..\readme.md'
     toc = parse_latex_toc(latex_file_path)
-    write_toc_to_txt(toc, output_txt_file)
+    write_toc_to_md(toc, readme_file_path)
