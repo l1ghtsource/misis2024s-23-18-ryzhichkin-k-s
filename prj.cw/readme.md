@@ -37,14 +37,12 @@
 ```c
 #include "numbertheory.hpp"
 
-// делает что-то
-somefunc(args)
+NumberTheory NT = NumberTheory();
 
-// делает что-то
-somefunc(args)
-
-// делает что-то
-somefunc(args)
+NT.Gcd(39, 52)
+NT.Lcm(39, 52)
+NT.Gcd(std::vector<int64_t>{39, 52, 65})
+NT.Lcm(std::vector<int64_t>{39, 52, 65})
 ```
 
 ## Учебные материалы
