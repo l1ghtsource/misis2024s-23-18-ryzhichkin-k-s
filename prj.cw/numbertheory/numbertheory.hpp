@@ -41,14 +41,17 @@ public:
   // решето Эратосфена (получение всех простых чисел, меньших n)
   static std::vector<int64_t> SieveOfEratosthenes(int64_t n);
 
+  // обратный по модулю элемент (такой, что ax = 1 (mod m)), если был возвращён 0, значит решений нет
+  static int64_t ModInverse(int64_t a, int64_t m);
+
   // решение линейного сравнения ax = b (mod m) по заданному модулю 
   static std::vector<int64_t> SolveLinearCongruence(int64_t a, int64_t b, int64_t m);
 
-  // обратный по модулю элемент (такой, что ax = 1 (mod m))
-  static int64_t ModInverse(int64_t a, int64_t m);
-
   // решение систем сравнений вида x = a_i (mod m_i)
   static std::vector<int64_t> SolveLinearCongruenceSystem(std::vector<int64_t>& a, std::vector<int64_t>& m);
+
+  // проверка: представимо ли простое число в виде суммы двух квадратов
+  static bool CheckSumOfSquares(int64_t p);
 
   // функция Эйлера (количество чисел x таких, что (n, x) = 1, x < n)
   static int64_t Phi(int64_t n);
@@ -64,9 +67,6 @@ public:
 
   // вычисление периода Пизано (длина периода последовательности Фибоначчи по модулю m)
   static int64_t Pisano(int64_t m);
-
-  // проверка: представимо ли простое число в виде суммы двух квадратов
-  static bool CheckSumOfSquares(int64_t p);
 
   // проверка: является ли число g первообразным корнем по модулю m
   static bool IsPrimitiveRoot(int64_t g, int64_t m);

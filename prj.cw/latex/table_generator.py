@@ -12,6 +12,7 @@ def is_prime(n):
         i += 6
     return True
 
+
 def generate_latex_square(n):
     latex_code = "\\begin{center}\n\\begin{tabular}{"
     for _ in range(n):
@@ -28,7 +29,7 @@ def generate_latex_square(n):
                 latex_code += " & "
             num += 1
         latex_code += " \\\\\n\\hline\n" if i < n else " \\\\\n\\hline\n"
-    latex_code += "\\end{tabular}\n\\end{center}\n\\vspace{0.5cm}\n\\noindent\\textbf{Иллюстрация решета Эратосфена}"
+    latex_code += "\\end{tabular}\n\\end{center}"
     return latex_code
 
 latex_code = generate_latex_square(10)

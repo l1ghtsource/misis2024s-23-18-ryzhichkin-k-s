@@ -11,6 +11,7 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
 }
 
 int main() {
+  std::cout.setf(std::ios_base::boolalpha);
   NumberTheory NT = NumberTheory();
 
   std::cout << NT.Gcd(39, 52) << std::endl;
@@ -31,6 +32,12 @@ int main() {
   std::cout << NT.PrimePowerInFactorial(6, 2) << std::endl;
 
   std::cout << NT.SieveOfEratosthenes(100) << std::endl;
+
+  std::cout << NT.CheckSumOfSquares(17) << std::endl;
+
+  std::cout << NT.ModInverse(7, 26) << std::endl;
+
+  std::cout << NT.SolveLinearCongruence(6, 26, 22) << std::endl;
 
   return 0;
 }

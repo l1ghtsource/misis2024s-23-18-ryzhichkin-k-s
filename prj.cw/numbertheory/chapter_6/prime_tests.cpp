@@ -8,5 +8,6 @@ bool NumberTheory::IsPrime(int64_t n, std::string method) {
   if (method == "sqrt") {
     return SqrtTest(n);
   }
+  return false;
   // добавить другие методы
 }
