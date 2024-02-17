@@ -3,11 +3,9 @@
 #ifndef STACKARR_HPP
 #define STACKARR_HPP
 
-#include <iostream>
 #include <cstddef>
 
-#include <complex/complex.hpp>
-#include <complex/complex.cpp>
+struct Complex;
 
 class StackArr {
 public:

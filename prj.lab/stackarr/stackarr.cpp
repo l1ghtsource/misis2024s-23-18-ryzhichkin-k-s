@@ -1,7 +1,8 @@
+#include <complex/complex.hpp>
+#include <stackarr/stackarr.hpp>
+
 #include <algorithm>
 #include <stdexcept>
-
-#include <stackarr/stackarr.hpp>
 
 bool StackArr::IsEmpty() const noexcept {
   return (i_top_ < 0);
