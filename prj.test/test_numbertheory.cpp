@@ -38,5 +38,7 @@ int main() {
 
   std::cout << NT.SolveLinearCongruence(6, 26, 22) << std::endl;
 
+  std::cout << NT.ChineseRemainderTheorem(std::vector<int64_t>{ 2, 3, 2 }, std::vector<int64_t>{ 3, 5, 7 }) << std::endl;
+
   return 0;
 }

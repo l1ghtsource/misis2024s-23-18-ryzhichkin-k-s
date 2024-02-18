@@ -15,7 +15,7 @@ int64_t NumberTheory::Lcm(int64_t a, int64_t b) {
   return a * b / Gcd(a, b);
 }
 
-int64_t NumberTheory::Gcd(std::vector<int64_t> numbers) {
+int64_t NumberTheory::Gcd(const std::vector<int64_t>& numbers) {
   int64_t res = numbers[0];
 
   for (int i = 1; i < numbers.size(); ++i) {
@@ -24,7 +24,7 @@ int64_t NumberTheory::Gcd(std::vector<int64_t> numbers) {
   return res;
 }
 
-int64_t NumberTheory::Lcm(std::vector<int64_t> numbers) {
+int64_t NumberTheory::Lcm(const std::vector<int64_t>& numbers) {
   int64_t res = numbers[0];
 
   for (int i = 1; i < numbers.size(); ++i) {

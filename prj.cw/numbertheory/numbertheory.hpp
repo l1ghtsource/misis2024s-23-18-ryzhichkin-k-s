@@ -5,9 +5,12 @@
 #include <tuple>
 #include <cmath>
 #include <string>
+#include <functional>
+#include <numeric>
 
 #include "other/extended_euclidean_result.hpp"
 #include "other/diophantus_result.hpp"
+#include "other/chinese_remainder_theorem_result.hpp"
 
 class NumberTheory {
 public:
@@ -18,10 +21,10 @@ public:
   int64_t Lcm(int64_t a, int64_t b);
 
   // наибольший общий делитель n чисел
-  int64_t Gcd(std::vector<int64_t > numbers);
+  int64_t Gcd(const std::vector<int64_t>& numbers);
 
   // наименьшее общее кратное n чисел
-  int64_t Lcm(std::vector<int64_t > numbers);
+  int64_t Lcm(const std::vector<int64_t>& numbers);
 
   // расширенный алгоритм Евклида (нахождение x, y, таких, что ax + by = (a, b))
   ExtendedEuclideanResult ExtEuclide(int64_t a, int64_t b);
@@ -47,8 +50,8 @@ public:
   // решение линейного сравнения ax = b (mod m) по заданному модулю 
   std::vector<int64_t> SolveLinearCongruence(int64_t a, int64_t b, int64_t m);
 
-  // решение систем сравнений вида x = a_i (mod m_i)
-  std::vector<int64_t> SolveLinearCongruenceSystem(std::vector<int64_t>& a, std::vector<int64_t>& m);
+  // решение систем сравнений вида x = r_i (mod m_i), все модули m_i взаимнопросты (!!!)
+  ChineseRemainderTheoremResult ChineseRemainderTheorem(const std::vector<int64_t>& r, const std::vector<int64_t>& m);
 
   // проверка: представимо ли простое число в виде суммы двух квадратов
   bool CheckSumOfSquares(int64_t p);
