@@ -1,7 +1,6 @@
 #include "../numbertheory.hpp"
 
-// содержит алгоритмы нахождения НОДа и НОКа 2-х или нескольких чисел, расширенный алгоритм Евклида, а также алгоритм решения линейного диофантова уравнения
-
+// greatest common divisor of two numbers
 int64_t NumberTheory::Gcd(int64_t a, int64_t b) {
   while (b != 0) {
     int64_t temp = b;
@@ -11,10 +10,12 @@ int64_t NumberTheory::Gcd(int64_t a, int64_t b) {
   return a;
 }
 
+// least common multiple of two numbers
 int64_t NumberTheory::Lcm(int64_t a, int64_t b) {
   return a * b / Gcd(a, b);
 }
 
+// greatest common divisor of n numbers
 int64_t NumberTheory::Gcd(const std::vector<int64_t>& numbers) {
   int64_t res = numbers[0];
 
@@ -24,6 +25,7 @@ int64_t NumberTheory::Gcd(const std::vector<int64_t>& numbers) {
   return res;
 }
 
+// least common multiple of n numbers
 int64_t NumberTheory::Lcm(const std::vector<int64_t>& numbers) {
   int64_t res = numbers[0];
 
@@ -33,6 +35,7 @@ int64_t NumberTheory::Lcm(const std::vector<int64_t>& numbers) {
   return res;
 }
 
+// extended Euclid's algorithm (finding x, y such that ax + by = (a, b))
 ExtendedEuclideanResult NumberTheory::ExtEuclide(int64_t a, int64_t b) {
   int64_t x = 0, y = 1, lastX = 1, lastY = 0, temp;
 
@@ -55,13 +58,14 @@ ExtendedEuclideanResult NumberTheory::ExtEuclide(int64_t a, int64_t b) {
   return ExtendedEuclideanResult(a, lastX, lastY);
 }
 
+// solution of the linear Diophantine equation ax + by = c
 DiophantusResult NumberTheory::Diophantus(int64_t a, int64_t b, int64_t c) {
   ExtendedEuclideanResult result = ExtEuclide(a, b);
 
   int64_t g = result.gcd;
 
   if (c % g != 0) {
-    return DiophantusResult(); // нет решений
+    return DiophantusResult(); // no solutions
   }
 
   int64_t k = c / g;

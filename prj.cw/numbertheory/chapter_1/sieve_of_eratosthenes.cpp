@@ -1,6 +1,6 @@
 #include "../numbertheory.hpp"
 
-
+// Eratosthenes sieve (obtaining all prime numbers less than n)
 std::vector<int64_t> NumberTheory::SieveOfEratosthenes(int64_t n) {
   std::vector<bool> isPrime(n + 1, true);
   std::vector<int64_t> primes;

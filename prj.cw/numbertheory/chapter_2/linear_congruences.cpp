@@ -1,5 +1,6 @@
 #include "..\numbertheory.hpp"
 
+// modulo inverse element (such that ax = 1 (mod m)), if 0 was returned, then there are no solutions
 int64_t NumberTheory::ModInverse(int64_t a, int64_t m) {
   if (a == 0 || Gcd(m, a) != 1) {
     return 0;
@@ -11,6 +12,7 @@ int64_t NumberTheory::ModInverse(int64_t a, int64_t m) {
   return result;
 }
 
+// solution of linear comparison ax = b (mod m) by a given modulus 
 std::vector<int64_t> NumberTheory::SolveLinearCongruence(int64_t a, int64_t b, int64_t m) {
   int64_t d = Gcd(a, m);
 
@@ -33,6 +35,7 @@ std::vector<int64_t> NumberTheory::SolveLinearCongruence(int64_t a, int64_t b, i
   return result;
 }
 
+// solving systems of comparisons of the form x = r_i (mod m_i), all modules of m_i are mutually simple (!!!)
 ChineseRemainderTheoremResult NumberTheory::ChineseRemainderTheorem(const std::vector<int64_t>& r, const std::vector<int64_t>& m) {
   int64_t n = r.size();
   int64_t t = m.size();

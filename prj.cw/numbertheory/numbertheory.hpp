@@ -14,90 +14,90 @@
 
 class NumberTheory {
 public:
-  // наибольший общий делитель двух чисел
+  // greatest common divisor of two numbers
   int64_t Gcd(int64_t a, int64_t b);
 
-  // наименьшее общее кратное двух чисел
+  // least common multiple of two numbers
   int64_t Lcm(int64_t a, int64_t b);
 
-  // наибольший общий делитель n чисел
+  // greatest common divisor of n numbers
   int64_t Gcd(const std::vector<int64_t>& numbers);
 
-  // наименьшее общее кратное n чисел
+  // least common multiple of n numbers
   int64_t Lcm(const std::vector<int64_t>& numbers);
 
-  // расширенный алгоритм Евклида (нахождение x, y, таких, что ax + by = (a, b))
+  // extended Euclid's algorithm (finding x, y such that ax + by = (a, b))
   ExtendedEuclideanResult ExtEuclide(int64_t a, int64_t b);
 
-  // решение линейного диофантова уравнения ax + by = c
+  // solution of the linear Diophantine equation ax + by = c
   DiophantusResult Diophantus(int64_t a, int64_t b, int64_t c);
 
-  // количество делителей числа (методы: enum - перебор делителей до корня, fact - через факторизацию по формуле количества делителей)
+  // number of divisors of the number (methods: enum - search of divisors up to the root, fact - through factorization by the formula of the number of divisors)
   int64_t DivisorsCount(int64_t n, std::string method = "enum");
 
-  // сумма делителей числа (методы: enum - перебор делителей до корня, fact - через факторизацию по формуле суммы делителей)
+  // sum of divisors of a number (methods: enum - search of divisors up to the root, fact - through factorization by the sum of divisors formula)
   int64_t DivisorsSum(int64_t n, std::string method = "enum");
 
-  // нахождение степени вхождения просто числа p в n!
+  // finding the degree of occurrence of a prime number p in n!
   int64_t PrimePowerInFactorial(int64_t n, int64_t p);
 
-  // решето Эратосфена (получение всех простых чисел, меньших n)
+  // Eratosthenes sieve (obtaining all prime numbers less than n)
   std::vector<int64_t> SieveOfEratosthenes(int64_t n);
 
-  // обратный по модулю элемент (такой, что ax = 1 (mod m)), если был возвращён 0, значит решений нет
+  // modulo inverse element (such that ax = 1 (mod m)), if 0 was returned, then there are no solutions
   int64_t ModInverse(int64_t a, int64_t m);
 
-  // решение линейного сравнения ax = b (mod m) по заданному модулю 
+  // solution of linear comparison ax = b (mod m) by a given modulus 
   std::vector<int64_t> SolveLinearCongruence(int64_t a, int64_t b, int64_t m);
 
-  // решение систем сравнений вида x = r_i (mod m_i), все модули m_i взаимнопросты (!!!)
+  // solving systems of comparisons of the form x = r_i (mod m_i), all modules of m_i are mutually simple (!!!)
   ChineseRemainderTheoremResult ChineseRemainderTheorem(const std::vector<int64_t>& r, const std::vector<int64_t>& m);
 
-  // проверка: представимо ли простое число в виде суммы двух квадратов
-  bool CheckSumOfSquares(int64_t p);
-
-  // функция Эйлера (количество чисел x таких, что (n, x) = 1, x < n)
+  // Euler function (the number of numbers x such that (n, x) = 1, x < n)
   int64_t Phi(int64_t n);
 
-  // возведение числа в степень по модулю
-  int64_t ModPow(int64_t a, int64_t m);
+  // check whether a prime number is representable as the sum of two squares
+  bool CheckSumOfSquares(int64_t p);
 
-  // возведение матрицы 2x2 в степень по модулю
+  // raising a number to a power modulo
+  int64_t ModPow(int64_t base, int64_t exp, int64_t m);
+
+  // raising a 2x2 matrix to a power modulo
   int64_t MatrixModPow(std::vector<std::vector<int64_t>>& mat, int64_t m);
 
-  // вычисление чисел Фибоначчи по модулю
+  // calculating Fibonacci numbers modulo
   int64_t ModFib(int64_t n, int64_t m);
 
-  // вычисление периода Пизано (длина периода последовательности Фибоначчи по модулю m)
+  // calculation of the Pisano period (length of the Fibonacci sequence period modulo m)
   int64_t Pisano(int64_t m);
 
-  // проверка: является ли число g первообразным корнем по модулю m
+  // check whether g is a prime root modulo m
   bool IsPrimitiveRoot(int64_t g, int64_t m);
 
-  // нахождение первообразных корней по модулю m
+  // finding primal roots modulo m
   int64_t FindPrimitiveRoot(int64_t m);
 
-  // ро-алгоритм факторизации Полларда
+  // Pollard's rho factorization algorithm
   std::vector<int64_t> RhoPollard(int64_t n);
 
-  // проверка на свободу от квадратов
+  // checking for freedom from squares
   bool IsSquareFree(int64_t n);
   
-  // функция Мёбиуса: mu(n) = 0, если n свободно от квадратов, иначе mu(n) = (-1)^k, где k - количество простых делителей n
+  // Möbius function: mu(n) = 0 if n is free from squares, otherwise mu(n) = (-1)^k, where k is the number of prime divisors of n
   int64_t Mobius(int64_t n);
 
-  // проверка: является ли число a квадратичным вычетом по простому модулю p
+  // check whether a is a quadratic deduction over a prime modulo p
   bool IsQuadraticResidue(int64_t a, int64_t p);
 
-  // символ Лежандра: (a/p) = 0, если a делится на p, (a/p) = 1, если a - квадратичный вычет по модулю p и a не делится на p, (a/p) = -1, если a - квадратичный невычет по модулю p
+  // Lejandre symbol: (a/p) = 0 if a is divisible by p, (a/p) = 1 if a is a quadratic deduction modulo p and a is not divisible by p, (a/p) = -1 if a is a quadratic non-deduction modulo p
   int64_t LegendreSymbol(int64_t a, int64_t p);
 
-  // символ Якоби: (a/P) = (a/p_1)(a/p_2)...(a/p_n), где (a/p_i) - символы Лежандра
+  // Jacobi symbol: (a/P) = (a/p_1)(a/p_2)...(a/p_n), where (a/p_i) are Lejandre symbols
   int64_t JacobiSymbol(int64_t a, int64_t p);
 
-  // тест на простоту: принимает число n и метод проверки на простоту (список методов: [sqrt, fermat, frobenius, millerrabin, bpsw])
+  // simplicity test: accepts a number n and a simplicity test method (list of methods: [sqrt, fermat, frobenius, millerrabin, bpsw]).
   bool IsPrime(int64_t n, std::string method="sqrt");
 
-  // выводит всю информацию о числе n (ДОБАВИТЬ ЧТО ИМЕННО)
+  // outputs all information about the number n (ADD WHAT IT IS)
   void AllAbout(int64_t n);
 };

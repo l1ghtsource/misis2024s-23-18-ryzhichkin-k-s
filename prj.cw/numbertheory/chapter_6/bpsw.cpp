@@ -1,6 +1,6 @@
 #include "../numbertheory.hpp"
 
-// BPSW тест на простоту
+// BPSW simplicity test
 bool BPSW(int64_t n) {
   return 0;
 }

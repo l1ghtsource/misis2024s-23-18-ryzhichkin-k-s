@@ -1,3 +1,5 @@
+/# table generator for Eratosthenes sieve visualization in LaTeX (maybe someday I'll write it in C++...)
+
 def is_prime(n):
     if n <= 1:
         return False

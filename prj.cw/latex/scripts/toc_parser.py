@@ -1,3 +1,5 @@
+# main.tex table of contents parser, which puts this table of contents into readme.md (maybe someday I'll write it in C++...)
+
 import re
 
 

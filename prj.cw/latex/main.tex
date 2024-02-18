@@ -818,5 +818,198 @@
 \noindent
     Таким образом, решением системы является $x \equiv 23 \pmod{105}$.
 
-\end{document}
+\section{Функция Эйлера}
 
+\begin{definition}
+    Функция Эйлера, обозначаемая как $\varphi(n)$, определяется как количество положительных целых чисел, меньших $n$ и взаимно простых с ним.
+\end{definition}
+
+\begin{statement}
+    Если $p \in \mathbb{P}$, то 
+    \[
+    \varphi(p) = p - 1
+    \]
+\end{statement}
+    
+\begin{proof}
+    Простые числа взаимно просты со всеми числами, меньшими их самих.
+\end{proof}
+
+\begin{statement}
+    Если $p \in \mathbb{P}$, $a \in \mathbb{N}$ то 
+    \[
+    \varphi(p^a) = p^a - p^{a-1}
+    \]
+\end{statement}
+
+\begin{proof}
+    С числом $p^a$ не взаимно просты только числа вида $pk$ ($k \in \mathbb{N}$), которых $\frac{p^a}{p} = p^{a-1}$ штук.
+\end{proof}
+
+\begin{statement}
+    Если $\text{НОД}(a, b) = 1$, то $\varphi(ab) = \varphi(a)\varphi(b)$.
+\end{statement}
+
+\begin{proof}
+    Рассмотрим произвольное число $z \le ab$. Обозначим через $x$ и $y$ остатки от деления $z$ на $a$ и $b$ соответственно. Тогда $z$ взаимно просто с $ab$ тогда и только тогда, когда $z$ взаимно просто с $a$ и с $b$ по отдельности, или, что то же самое, $x$ взаимно просто с $a$ и $y$ взаимно просто с $b$. Применяя китайскую теорему об остатках, получаем, что любой паре чисел $x$ и $y$ ($x \le a$, $y \le b$) взаимно однозначно соответствует число $z$ ($z \le ab$), что и завершает доказательство.)
+\end{proof}
+
+\begin{statement}
+    Для любого положительного целого числа $n$, функция Эйлера $\varphi(n)$ выражается следующим образом:
+    \[
+    \varphi(n) = n \prod_{p|n} \left(1 - \frac{1}{p}\right)
+    \]
+\end{statement}
+
+\begin{proof}
+    Пусть \[
+    n = \prod_{i = 1}^k p_{i}^{a_{i}}
+    \]
+    Тогда \[
+    \varphi(n) = \prod_{i = 1}^k \varphi(p_{i}^{a_{i}}) = 
+    \prod_{i = 1}^k (p_{i}^{a_{i}} - p_{i}^{a_{i} - 1}) =
+    \prod_{i = 1}^k p_{i}^{a_{i}} \left(1 - \frac{1}{p_{i}}\right) = 
+    n \prod_{p|n} \left(1 - \frac{1}{p}\right)
+    \]
+\end{proof}
+
+    Зная это соотношение и факторизацию числа, можно быстро находить значение функции Эйлера. Приведём алгоритм нахождения $\varphi(n)$, используя простейшую факторизацию сложностью $\text{O}(\sqrt{n})$: 
+    
+\begin{lstlisting}
+int64_t NumberTheory::Phi(int64_t n) {
+  int64_t result = n;
+
+  for (int64_t i = 2; i * i <= n; ++i)
+    if (n % i == 0) {
+      while (n % i == 0)
+        n /= i;
+      result -= result / i;
+    }
+
+  if (n > 1)
+    result -= result / n;
+
+  return result;
+}
+\end{lstlisting}
+
+    В дальнейшем, алгоритм можно будет оптимизировать, использовав другие реализации факторизации.
+
+\newpage
+\section{Теорема Эйлера}
+\begin{theorem}
+    Если $n \in \mathbb{N}$, $a \in \mathbb{Z}$, $\text{НОД}(a, n) = 1$, $\varphi(n)$ - функция Эйлера, то
+    \[
+    a^{\varphi(n)} \equiv 1 \pmod{n}
+    \]
+\end{theorem}
+
+\begin{proof}
+    Пусть $\mathbb{S}$ - множество всех чисел от $1$ до $n$, которые взаимно просты с $n$. 
+    Положим $\mathbb{S} = \{a_1, a_2, \ldots, a_{\varphi(n)}\}$. Рассмотрим множество $a\mathbb{S} = \{aa_1, aa_2, \ldots, aa_{\varphi(n)}\}$. 
+    
+    Заметим, что все элементы множества $a\mathbb{S}$ также взаимно просты с $n$, так как они являются произведениями взаимно простых с $n$ чисел $a$ и $a_i$. Поскольку $a\mathbb{S}$ и $\mathbb{S}$ содержат одинаковое количество элементов и каждый элемент $a\mathbb{S}$ взаимно прост с $n$, то $a\mathbb{S}$ содержит те же числа, что и $\mathbb{S}$, но в другом порядке. Перемножим все элементы множества $a\mathbb{S}$:
+    \[
+    a \cdot a_1 \cdot a \cdot a_2 \cdot \ldots \cdot a \cdot a_{\phi(n)} = a^{\varphi(n)} \cdot (a_1 \cdot a_2 \cdot \ldots \cdot a_{\varphi(n)})
+    \]
+    
+    Так как $a$ взаимно просто с $n$, то $a^{\varphi(n)}$ взаимно просто с $n$, значит
+    \[
+    a^{\varphi(n)} (a_1 \cdot \ldots \cdot a_{\varphi(n)}) \equiv (a_1 \cdot \ldots \cdot a_{\varphi(n)}) \pmod{n}
+    \]
+    
+    Умножим обе части сравнения на $(a_1 \cdot \ldots \cdot a_{\varphi(n)})^{-1}$ (обратный элемент существует в силу того, что $\text{НОД}(a_1 \cdot \ldots \cdot a_{\varphi(n)}, n) = 1$, тогда получим требуемое:
+    \[
+    a^{\varphi(n)} \equiv 1 \pmod{n}
+    \]
+
+\end{proof}
+
+    Теорема Эйлера используется в алгоритмах шифрования, в алгоритмах генерации псевдослучайных чисел, позволяет эффективно находить обратные элементы в кольцах вычетов.
+
+\section{Малая теорема Ферма}
+
+\begin{theorem}
+    Если $p \in \mathbb{P}, a \in \mathbb{Z}, \text{НОД}(a, p) = 1$, то
+    \[
+    a^{p-1} \equiv 1 \pmod{p}
+    \]
+\end{theorem}
+
+\begin{proof}
+    Положим $n = p$, тогда по теореме Эйлера: $a^{\varphi(p)} \equiv 1 \pmod{p}$, $\varphi(p) = p -1$, отсюда получаем $a^{p-1} \equiv 1 \pmod{p}$.
+\end{proof}
+
+    Данная теорема пригодится нам в будущем для написания вероятностного теста на простоту.
+
+\newpage
+\section{Теорема Вильсона}
+
+\begin{theorem}
+    $p \in \mathbb{P} \Leftrightarrow (p - 1)! \equiv -1 \pmod{p}$
+\end{theorem}
+
+\begin{proof}
+    Рассмотрим $(p - 1)!$ Множество ненулевых классов вычетов по простому модулю $p$ по умножению $\mathbb{Z}_p^\times$ является группой, и тогда $(p - 1)!$ - это произведение всех элементов группы $\mathbb{Z}_p^\times$. Поскольку $\mathbb{Z}_p^\times$ - группа, то для каждого её элемента $a$ существует единственный обратный элемент $a^{-1}$: $aa^{-1} \equiv 1 \pmod{p}$.  
+    
+    Соответствие $a \to a^{-1}$ разбивает группу на классы: если $a = a^{-1}$ (что равносильно $a^2 = 1$, то есть $a \in \{-1, 1\}$, поскольку у уравнения второй степени может быть не более двух решений), то класс содержит один элемент $a$, в противном случае класс состоит из двух элементов - $\{a, a^{-1}\}$. 
+    
+    Значит, если класс содержит один элемент $a$, то произведение всех его элементов равно $a$, а если класс содержит 2 элемента, то произведение всех его элементов равно 1. Теперь в произведении $(p - 1)!$ сгруппируем элементы по классам, все произведения по 2-элементным классам просто равны 1:
+    \[
+    (p - 1)! \equiv \prod_{a^2 = 1}a \prod_{a^2 \neq 1}a \equiv \prod_{a^2 = 1}a \equiv (-1) \cdot 1 \equiv -1 \pmod{p}
+    \]
+\end{proof}
+
+\section{Представимость простого числа в виде суммы двух квадратов}
+
+\begin{statement}
+    Если $p \in \mathbb{P}, p \equiv 1 \pmod{4}$, то $p = a^2 + b^2$, где $a, b \in \mathbb{Z}$.
+\end{statement}
+
+\begin{proof}
+    По теореме Вильсона $(p - 1)! \equiv -1 \pmod{p}$, зная, что $p = 4n + 1$, получим $(4n)! + 1 \equiv 0 \pmod{p}$. Следовательно $1 \cdot 2 \cdot \ldots \cdot (2n) \cdot (2n + 1) \cdot \ldots \cdot (4n) + 1 \equiv 1 \cdot 2 \cdot \ldots \cdot (p - 2n) \cdot \ldots \cdot (p - 1) + 1 \pmod{p}$ Положим $N = (2n)!$, тогда $N^2 \equiv -1 \pmod{p}$
+
+    Рассмотрим пары чисел $(m,s)$ такие, что $0 \leq m,s \leq \lfloor \sqrt{p} \rfloor$. Число таких пар равно $(\lfloor \sqrt{p} \rfloor + 1)^2 > p$. Значит по крайней мере для двух различных пар $(m_1, s_1), (m_2, s_2)$ остатки от деления $m_1 + Ns_1, m_2 + Ns_2$ на $p$ будут одинаковыми, т.е. число $a + Nb$, где $a = m_1 - m_2, b = s_1 - s_2$, будет делится на $p$. При этом $\lvert a \rvert < \sqrt{p}, \lvert b \rvert < \sqrt{p}$. Но тогда число $a^2 - N^2b^2 = (a - Nb)(a + Nb)$ делится на $p$. Учитывая, что $N^2 \equiv -1 \pmod{p}$, получим, что $a^2 + b^ 2 \equiv 0 \pmod{p} \Leftrightarrow a^2 + b^2 = rp$, где $r \in \mathbb{N}$. Но $a^2 + b^2 < 2p \Leftrightarrow r = 1$, а значит $a^2 + b^2 = p$. 
+\end{proof}
+
+\newpage
+\noindent
+    Проверка представимости простого числа в виде суммы двух квадратов в C++:
+    
+\begin{lstlisting}
+  bool NumberTheory::CheckSumOfSquares(int64_t p) {
+  if (IsPrime(p)) {
+    if (p % 4 == 1) {
+      return true;
+    }
+    return false;
+  }
+  else {
+    throw std::invalid_argument("This function is only for prime numbers");
+  }
+}
+\end{lstlisting}
+
+\section{Возведение в степень по модулю}
+
+    В программировании, особенно в криптографии и математических задачах, часто требуется возводить большие числа в степень по модулю большого числ). Этот процесс может быть ресурсоёмким, и может привести к переполнению типов данных. Однако, существует эффективный алгоритм, который позволяет выполнять быстрое возведение в степень по модулю.
+
+    Давайте рассмотрим реализацию алгоритма возведения в степень по модулю на языке программирования C++:
+
+\begin{lstlisting}
+  int64_t NumberTheory::ModPow(int64_t base, int64_t exp, int64_t m) {
+  int64_t result = 1;
+  base %= m;
+  
+  while (exp > 0) {
+    if (exp & 1) {
+      result = (result * base) % m;
+    }
+    base = (base * base) % m;
+    exp >>= 1;
+  }
+  return result;
+}
+\end{lstlisting}
+
+\end{document}

@@ -6,11 +6,12 @@ chapter_1/sieve_of_eratosthenes.cpp
 chapter_2/check_sum_of_squares.cpp
 chapter_2/euler_func.cpp
 chapter_2/linear_congruences.cpp
-chapter_2/linear_congruences.cpp
+chapter_2/modpow.cpp
 chapter_3/fib.cpp
 chapter_4/primitive_roots.cpp
 chapter_4/quadratic_residue.cpp
 chapter_4/square_free.cpp
+chapter_5/easy_factorize.cpp
 chapter_5/rho_pollard.cpp
 chapter_6/prime_tests.cpp
 other/all_about.cpp

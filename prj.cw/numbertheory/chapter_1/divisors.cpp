@@ -1,5 +1,6 @@
 #include "../numbertheory.hpp"
 
+// number of divisors of the number (methods: enum - search of divisors up to the root, fact - through factorization by the formula of the number of divisors)
 int64_t NumberTheory::DivisorsCount(int64_t n, std::string method) {
   n = std::abs(n);
 
@@ -22,6 +23,7 @@ int64_t NumberTheory::DivisorsCount(int64_t n, std::string method) {
   }
 }
 
+// sum of divisors of a number (methods: enum - search of divisors up to the root, fact - through factorization by the sum of divisors formula)
 int64_t NumberTheory::DivisorsSum(int64_t n, std::string method) {
   n = std::abs(n);
 

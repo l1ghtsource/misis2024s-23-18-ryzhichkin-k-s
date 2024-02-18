@@ -1,6 +1,6 @@
 #include "../numbertheory.hpp"
 
-// тест на простоту перебором делителей до корня из n
+// simplicity test by going through divisors up to the root of n
 bool SqrtTest(int64_t n) {
   if (n == 1) {
     return false;
