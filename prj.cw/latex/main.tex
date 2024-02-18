@@ -875,7 +875,7 @@
 
     Зная это соотношение и факторизацию числа, можно быстро находить значение функции Эйлера. Приведём алгоритм нахождения $\varphi(n)$, используя простейшую факторизацию сложностью $\text{O}(\sqrt{n})$: 
     
-\begin{lstlisting}
+\begin{lstlisting}[breaklines=true]
 int64_t NumberTheory::Phi(int64_t n) {
   int64_t result = n;
 
@@ -976,7 +976,7 @@ int64_t NumberTheory::Phi(int64_t n) {
 \noindent
     Проверка представимости простого числа в виде суммы двух квадратов в C++:
     
-\begin{lstlisting}
+\begin{lstlisting}[breaklines=true]
   bool NumberTheory::CheckSumOfSquares(int64_t p) {
   if (IsPrime(p)) {
     if (p % 4 == 1) {
@@ -996,7 +996,7 @@ int64_t NumberTheory::Phi(int64_t n) {
 
     Давайте рассмотрим реализацию алгоритма возведения в степень по модулю на языке программирования C++:
 
-\begin{lstlisting}
+\begin{lstlisting}[breaklines=true]
   int64_t NumberTheory::ModPow(int64_t base, int64_t exp, int64_t m) {
   int64_t result = 1;
   base %= m;
