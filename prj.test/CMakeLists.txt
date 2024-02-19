@@ -16,4 +16,7 @@ target_link_libraries(test_stacklst stacklst)
 add_executable(test_numbertheory test_numbertheory.cpp)
 target_link_libraries(test_numbertheory numbertheory)
 
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT numbertheory)
+add_executable(test_queuelst test_queuelst.cpp)
+target_link_libraries(test_queuelst queuelst)
+
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT test_queuelst)

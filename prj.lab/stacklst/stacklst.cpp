@@ -34,7 +34,7 @@ Complex& StackLst::Top() {
     return head->v;
   }
   else {
-    throw std::logic_error("StackLst - try get top form empty lst.");
+    throw std::logic_error("StackLst - try get top from empty lst.");
   }
 }
 
@@ -43,7 +43,7 @@ const Complex& StackLst::Top() const {
     return head->v;
   }
   else {
-    throw std::logic_error("StackLst - try get top form empty lst.");
+    throw std::logic_error("StackLst - try get top from empty lst.");
   }
 }
 
