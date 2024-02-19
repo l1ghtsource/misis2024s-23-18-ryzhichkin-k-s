@@ -2,7 +2,9 @@
 #include "doctest.h"
 
 #include <stacklst/stacklst.hpp>
-#include <stacklst/stacklst.cpp>
+#include <complex/complex.hpp>
+
+#include <cstdint>
 
 TEST_CASE("stacklst ctor") {
   StackLst stack;

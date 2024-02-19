@@ -1,4 +1,13 @@
+#include <complex/complex.hpp>
 #include <stacklst/stacklst.hpp>
+
+#include <algorithm>
+#include <stdexcept>
+
+struct StackLst::Node {
+  Complex v;
+  Node* next = nullptr;
+};
 
 bool StackLst::IsEmpty() const noexcept {
   return (head == nullptr);
