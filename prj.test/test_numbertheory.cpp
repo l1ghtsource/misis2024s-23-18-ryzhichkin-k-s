@@ -44,5 +44,7 @@ int main() {
 
   std::cout << NT.ModPow(29, 64, 786) << std::endl;
 
+  std::cout << NT.ModFib(10, 54) << std::endl;
+
   return 0;
 }

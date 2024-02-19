@@ -62,8 +62,11 @@ public:
   // raising a number to a power modulo
   int64_t ModPow(int64_t base, int64_t exp, int64_t m);
 
+  // multiply 2x2 matrices modulo
+  std::vector<std::vector<int64_t>> Multiply2x2MatricesMod(std::vector<std::vector<int64_t>>& A, std::vector<std::vector<int64_t>>& B, int64_t m);
+
   // raising a 2x2 matrix to a power modulo
-  int64_t MatrixModPow(std::vector<std::vector<int64_t>>& mat, int64_t m);
+  std::vector<std::vector<int64_t>> MatrixModPow(std::vector<std::vector<int64_t>>& mat, int64_t exp, int64_t m);
 
   // calculating Fibonacci numbers modulo
   int64_t ModFib(int64_t n, int64_t m);
