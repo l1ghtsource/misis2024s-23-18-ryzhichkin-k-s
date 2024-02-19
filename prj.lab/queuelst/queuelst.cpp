@@ -5,48 +5,42 @@
 #include <stdexcept>
 
 struct QueueLst::Node {
-  Complex v;
+  Complex data;
   Node* next = nullptr;
+
+  Node(Complex v) : data(v), next(nullptr) {}
 };
 
 bool QueueLst::IsEmpty() const noexcept {
-  return (tail == nullptr);
+  return (head == nullptr);
 }
 
 void QueueLst::Pop() noexcept {
   if (!IsEmpty()) {
-    if (head == tail) {
-      tail = nullptr;
-      head = nullptr;
-    }
-    else {
-      Node* temp = head;
-      head = head->next;
-      delete temp;
-      temp = nullptr;
-    }
+    Complex value = head->data;
+    Node* temp = head;
+    head = head->next;
+    delete temp;
+  }
+  else {
+    tail = nullptr;
   }
 }
 
 void QueueLst::Push(const Complex& v) {
+  Node* g = new Node(v);
   if (IsEmpty()) {
-    Node* g = new Node;
-    g->next = tail;
-    g->v = v;
-    tail = g;
-    head = tail;
+    head = tail = g;
   }
   else {
-    Node* g = new Node;
-    g->next = tail;
-    g->v = v;
+    tail->next = g;
     tail = g;
   }
 }
 
 Complex& QueueLst::Top() {
   if (!IsEmpty()) {
-    return tail->v;
+    return head->data;
   }
   else {
     throw std::logic_error("QueueLst - try get top from empty lst.");
@@ -55,7 +49,7 @@ Complex& QueueLst::Top() {
 
 const Complex& QueueLst::Top() const {
   if (!IsEmpty()) {
-    return tail->v;
+    return head->data;
   }
   else {
     throw std::logic_error("QueueLst - try get top from empty lst.");
@@ -63,11 +57,7 @@ const Complex& QueueLst::Top() const {
 }
 
 void QueueLst::Clear() noexcept {
-  Node* temp;
   while (!IsEmpty()) {
-    temp = tail;
-    tail = tail->next;
-    delete temp;
-    temp = nullptr;
+    Pop();
   }
 }
