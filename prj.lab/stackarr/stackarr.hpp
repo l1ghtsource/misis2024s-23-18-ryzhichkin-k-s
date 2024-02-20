@@ -3,15 +3,15 @@
 #ifndef STACKARR_HPP
 #define STACKARR_HPP
 
-#include <cstddef>
+#include <complex/complex.hpp>
 
-struct Complex;
+#include <cstddef>
 
 class StackArr {
 public:
-  [[nodiscard]] StackArr() = default;
+  StackArr() = default;
 
-  [[nodiscard]] StackArr(const StackArr&) = default;
+  StackArr(const StackArr&) = default;
 
   ~StackArr() = default;
 

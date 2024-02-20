@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 project(ryzhichkin-k-s-23-18)
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "cmake")
 
@@ -18,4 +19,7 @@ endif()
 
 add_subdirectory(prj.lab)
 add_subdirectory(prj.test)
-add_subdirectory(prj.cw)
+
+if (BUILD_WITH_SAMPLES)
+  add_subdirectory(prj.cw)
+endif()

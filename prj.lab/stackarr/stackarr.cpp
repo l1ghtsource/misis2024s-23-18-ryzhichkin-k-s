@@ -1,7 +1,5 @@
-#include <complex/complex.hpp>
 #include <stackarr/stackarr.hpp>
 
-#include <algorithm>
 #include <stdexcept>
 
 bool StackArr::IsEmpty() const noexcept {

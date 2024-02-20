@@ -3,20 +3,20 @@
 #ifndef QUEUELST_HPP
 #define QUEUELST_HPP
 
-#include <cstddef>
+#include <complex/complex.hpp>
 
-struct Complex;
+#include <cstddef>
 
 class QueueLst {
 public:
-  [[nodiscard]] QueueLst() = default;
-  [[nodiscard]] QueueLst(const QueueLst&) = default;
+  QueueLst() = default;
+  QueueLst(const QueueLst&) = default;
 
   ~QueueLst() = default;
 
   [[nodiscard]] QueueLst& operator=(const QueueLst&) = default;
 
-  bool IsEmpty() const noexcept;
+  [[nodiscard]] bool IsEmpty() const noexcept;
 
   void Pop() noexcept;
 
@@ -28,7 +28,11 @@ public:
   void Clear() noexcept;
 
 private:
-  struct Node;
+  struct Node {
+    Complex data;
+    Node* next = nullptr;
+    Node(Complex v) : data(v), next(nullptr) {}
+  };
   Node* head = nullptr;
   Node* tail = nullptr;
 };

@@ -3,9 +3,9 @@
 #ifndef STACKLST_HPP
 #define STACKLST_HPP
 
-#include <cstddef>
+#include <complex/complex.hpp>
 
-struct Complex;
+#include <cstddef>
 
 class StackLst {
 public:
@@ -28,7 +28,10 @@ public:
   void Clear() noexcept;
 
 private:
-  struct Node;
+  struct Node {
+    Complex v;
+    Node* next = nullptr;
+  };
   Node* head = nullptr;
 };
 
