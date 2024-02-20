@@ -2,17 +2,12 @@
 
 // raising a number to a power modulo
 int64_t NumberTheory::ModPow(int64_t base, int64_t exp, int64_t m) {
-  int64_t result = 1;
-  base %= m;
-
-  while (exp > 0) {
-    if (exp & 1) {
-      result = (result * base) % m;
-    }
-    base = (base * base) % m;
-    exp >>= 1;
-  }
-  return result;
+  if (exp == 0)
+    return 1;
+  int64_t temp = ModPow(base, exp / 2, m) % m;
+  if (exp % 2 == 0)
+    return (temp * temp) % m;
+  return (base * temp * temp) % m;
 }
 
 // multiply 2x2 matrices modulo

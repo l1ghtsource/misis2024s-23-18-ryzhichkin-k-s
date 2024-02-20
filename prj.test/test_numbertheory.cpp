@@ -42,7 +42,7 @@ int main() {
 
   std::cout << NT.Phi(10) << std::endl;
 
-  std::cout << NT.ModPow(29, 64, 786) << std::endl;
+  std::cout << NT.ModPow(279, 644, 7826) << std::endl;
 
   std::cout << NT.ModFib(10, 54) << std::endl;
 
