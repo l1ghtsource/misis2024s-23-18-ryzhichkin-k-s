@@ -9,9 +9,9 @@
 
 class DynArr {
 public:
-  [[nodiscard]] DynArr() = default;
-  [[nodiscard]] DynArr(const DynArr&);
-  [[nodiscard]] DynArr(const ptrdiff_t size);
+  DynArr() = default;
+  DynArr(const DynArr&);
+  DynArr(const ptrdiff_t size);
 
   ~DynArr();
 
