@@ -11,11 +11,13 @@ class DynArr {
 public:
   DynArr() = default;
   DynArr(const DynArr&);
+  DynArr(DynArr&&);
   DynArr(const ptrdiff_t size);
 
   ~DynArr();
 
   DynArr& operator=(const DynArr& rhs);
+  DynArr& operator=(DynArr&& rhs);
 
   [[nodiscard]] ptrdiff_t Size() const noexcept { return size_; }
 

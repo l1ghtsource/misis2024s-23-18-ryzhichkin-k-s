@@ -8,6 +8,13 @@ DynArr::DynArr(const DynArr& rhs)
   }
 }
 
+DynArr::DynArr(DynArr&& other)
+  : size_(other.size_), capacity_(other.capacity_), data_(other.data_) {
+  other.size_ = 0;
+  other.capacity_ = 0;
+  other.data_ = nullptr;
+}
+
 DynArr::DynArr(const ptrdiff_t size)
   : size_(size), capacity_(size) {
     if (size <= 0) {
@@ -31,6 +38,20 @@ DynArr& DynArr::operator=(DynArr const& rhs) {
     for (int i = 0; i < rhs.size_; i += 1) {
       data_[i] = rhs.data_[i];
     }
+  }
+  return *this;
+}
+
+DynArr& DynArr::operator=(DynArr&& rhs) {
+  if (this != &rhs) {
+    delete[] data_;
+    size_ = rhs.size_;
+    capacity_ = rhs.capacity_;
+    data_ = rhs.data_;
+
+    rhs.size_ = 0;
+    rhs.capacity_ = 0;
+    rhs.data_ = nullptr;
   }
   return *this;
 }

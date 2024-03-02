@@ -1,10 +1,5 @@
 #include <rational/rational.hpp>
 
-Rational::Rational(const int64_t num) {
-  num_ = num;
-  den_ = 1;
-}
-
 Rational::Rational(const int64_t num, const int64_t den) {
   if (0 == den) {
     throw std::invalid_argument("Zero denumenator in Rational ctor");

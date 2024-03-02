@@ -9,11 +9,13 @@
 class Rational {
 public:
   Rational() = default;
-  Rational(const int64_t num);
+  explicit Rational(const int64_t num) noexcept : num_(num) { };
   Rational(const Rational& rhs) = default;
+  Rational(Rational&&) = default;
   Rational(const int64_t num, const int64_t den);
 
   Rational& operator=(const Rational&) = default;
+  Rational& operator=(Rational&&) = default;
 
   ~Rational() = default;
 

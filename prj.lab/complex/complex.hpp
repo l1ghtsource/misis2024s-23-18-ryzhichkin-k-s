@@ -12,13 +12,15 @@
 const double PI = 3.14159265358979323846;
 
 struct Complex {
-  [[nodiscard]] Complex() = default;
-  [[nodiscard]] Complex(const Complex&) = default;
-  [[nodiscard]] Complex(const double real) : re(real), im(0.0) {}
-  [[nodiscard]] Complex(const double real, const double imaginary) : re(real), im(imaginary) {}
+  Complex() = default;
+  Complex(const Complex&) = default;
+  Complex(Complex&&) = default;
+  Complex(const double real) : re(real), im(0.0) {}
+  Complex(const double real, const double imaginary) : re(real), im(imaginary) {}
   ~Complex() = default;
 
-  [[nodiscard]] Complex& operator=(const Complex&) = default;
+  Complex& operator=(const Complex&) = default;
+  Complex& operator=(Complex&&) = default;
 
   [[nodiscard]] Complex operator-() const noexcept { return { -re, -im }; }
 
