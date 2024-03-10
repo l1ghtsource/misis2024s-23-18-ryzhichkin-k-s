@@ -1,20 +1,20 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 
-#include <queuelstspr/queuelstspr.hpp>
+#include <queuelstpr/queuelstpr.hpp>
 
 #include <cstdint>
 
-TEST_CASE("queuelstspr ctor") {
-  QueueLstsPr queue;
+TEST_CASE("queuelstpr ctor") {
+  QueueLstPr queue;
   CHECK_EQ(queue.IsEmpty(), 1);
-  QueueLstsPr queue_copy(queue);
-  QueueLstsPr queue_again = queue_copy;
+  QueueLstPr queue_copy(queue);
+  QueueLstPr queue_again = queue_copy;
   CHECK_EQ(queue_copy.IsEmpty(), 1);
 }
 
 TEST_CASE("push, pop, top, clear") {
-  QueueLstsPr queue;
+  QueueLstPr queue;
   CHECK_THROWS(void(queue.Top()));
   queue.Push(1);
   CHECK_EQ(queue.IsEmpty(), 0);

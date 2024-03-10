@@ -1,23 +1,23 @@
-#include <queuelstspr/queuelstspr.hpp>
+#include <queuelstpr/queuelstpr.hpp>
 
 #include <stdexcept>
 
-QueueLstsPr::~QueueLstsPr() {
+QueueLstPr::~QueueLstPr() {
   Clear();
 }
 
-bool QueueLstsPr::IsEmpty() const noexcept {
+bool QueueLstPr::IsEmpty() const noexcept {
   return head == nullptr;
 }
 
-void QueueLstsPr::Pop() noexcept {
-  if (head == nullptr) return; // Empty queue
+void QueueLstPr::Pop() noexcept {
+  if (head == nullptr) return;
   Node* temp = head;
   head = head->next;
   delete temp;
 }
 
-void QueueLstsPr::Push(float val) {
+void QueueLstPr::Push(float val) {
   Node* newNode = new Node(val);
   if (IsEmpty()) {
     head = newNode;
@@ -40,17 +40,17 @@ void QueueLstsPr::Push(float val) {
   }
 }
 
-float& QueueLstsPr::Top() {
+float& QueueLstPr::Top() {
   if (IsEmpty()) throw std::out_of_range("Queue is empty");
   return head->data;
 }
 
-const float& QueueLstsPr::Top() const {
+const float& QueueLstPr::Top() const {
   if (IsEmpty()) throw std::out_of_range("Queue is empty");
   return head->data;
 }
 
-void QueueLstsPr::Clear() noexcept {
+void QueueLstPr::Clear() noexcept {
   while (!IsEmpty()) {
     Pop();
   }

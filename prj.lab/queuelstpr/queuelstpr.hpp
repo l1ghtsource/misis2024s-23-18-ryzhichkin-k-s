@@ -1,20 +1,20 @@
 #pragma once
 
-#ifndef QUEUELSTSPR_HPP
+#ifndef QUEUELSTPR_HPP
 #define QUEUELSTPR_HPP
 
 #include <cstddef>
 
-class QueueLstsPr {
+class QueueLstPr {
 public:
-  QueueLstsPr() = default;
-  QueueLstsPr(const QueueLstsPr&) = default;
-  QueueLstsPr(QueueLstsPr&&) = default;
+  QueueLstPr() = default;
+  QueueLstPr(const QueueLstPr&) = default;
+  QueueLstPr(QueueLstPr&&) = default;
 
-  ~QueueLstsPr();
+  ~QueueLstPr();
 
-  QueueLstsPr& operator=(const QueueLstsPr&) = default;
-  QueueLstsPr& operator=(QueueLstsPr&&) = default;
+  QueueLstPr& operator=(const QueueLstPr&) = default;
+  QueueLstPr& operator=(QueueLstPr&&) = default;
 
   [[nodiscard]] bool IsEmpty() const noexcept;
 
