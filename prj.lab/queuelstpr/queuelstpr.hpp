@@ -8,22 +8,22 @@
 class QueueLstPr {
 public:
   QueueLstPr() = default;
-  QueueLstPr(const QueueLstPr&) = default;
-  QueueLstPr(QueueLstPr&&) = default;
+  QueueLstPr(const QueueLstPr& rhs);
+  QueueLstPr(QueueLstPr&& rhs) noexcept;
 
   ~QueueLstPr();
 
-  QueueLstPr& operator=(const QueueLstPr&) = default;
-  QueueLstPr& operator=(QueueLstPr&&) = default;
+  QueueLstPr& operator=(const QueueLstPr&);
+  QueueLstPr& operator=(QueueLstPr&&) noexcept;
 
-  [[nodiscard]] bool IsEmpty() const noexcept;
+  bool IsEmpty() const noexcept;
 
   void Pop() noexcept;
 
-  void Push(float val);
+  void Push(const float& val);
 
-  [[nodiscard]] float& Top();
-  [[nodiscard]] const float& Top() const;
+  float& Top();
+  const float& Top() const;
 
   void Clear() noexcept;
 
