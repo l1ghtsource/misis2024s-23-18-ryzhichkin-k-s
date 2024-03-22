@@ -3,67 +3,84 @@
 #include <algorithm>
 #include <stdexcept>
 
-QueueArr::QueueArr(const QueueArr& other) : size_(other.size_), data_(new Complex[size_]), head_(other.head_), tail_(other.tail_) {
-  std::copy(other.data_, other.data_ + size_, data_);
+QueueArr::QueueArr(const QueueArr& rhs) : size_(rhs.size_), head_(0), tail_(rhs.size_) {
+  data_ = new Complex[size_];
+  std::copy(rhs.data_, rhs.data_ + size_, data_);
+}
+
+QueueArr::QueueArr(const Complex& rhs) : size_(1), head_(0), tail_(1) {
+  data_ = new Complex[size_];
+  *data_ = rhs;
+}
+
+QueueArr::QueueArr(QueueArr&& rhs) noexcept : data_(rhs.data_), size_(rhs.size_), head_(rhs.head_), tail_(rhs.tail_) {
+  rhs.data_ = nullptr;
+  rhs.size_ = 0;
+  rhs.head_ = 0;
+  rhs.tail_ = 0;
 }
 
 QueueArr::~QueueArr() {
-  delete[] data_;
+  Clear();
 }
 
-QueueArr& QueueArr::operator=(const QueueArr& other) {
-  if (this != &other) {
+QueueArr& QueueArr::operator=(const QueueArr& rhs) {
+  if (this != &rhs) {
     delete[] data_;
-    size_ = other.size_;
+    size_ = rhs.size_;
+    head_ = 0;
+    tail_ = rhs.size_;
     data_ = new Complex[size_];
-    std::copy(other.data_, other.data_ + size_, data_);
-    head_ = other.head_;
-    tail_ = other.tail_;
+    std::copy(rhs.data_, rhs.data_ + size_, data_);
+  }
+  return *this;
+}
+
+QueueArr& QueueArr::operator=(QueueArr&& rhs) noexcept {
+  if (this != &rhs) {
+    delete[] data_;
+
+    data_ = rhs.data_;
+    size_ = rhs.size_;
+    head_ = rhs.head_;
+    tail_ = rhs.tail_;
+
+    rhs.data_ = nullptr;
+    rhs.size_ = 0;
+    rhs.head_ = 0;
+    rhs.tail_ = 0;
   }
   return *this;
 }
 
 bool QueueArr::IsEmpty() const noexcept {
-  return Count() == 0;
+  return (size_ == 0);
 }
 
 void QueueArr::Pop() noexcept {
   if (!IsEmpty()) {
-    if (head_ != tail_) {
-      head_ = (head_ + 1) % size_;
-    }
-    else {
-      head_ = -1;
-    }
+    ++head_;
+    --size_;
   }
 }
 
 void QueueArr::Push(const Complex& val) {
-  if (nullptr == data_) {
+  if (IsEmpty()) {
     data_ = new Complex[1];
+    data_[0] = val;
     size_ = 1;
     head_ = 0;
-    tail_ = 0;
+    tail_ = 1;
   }
   else {
-    if (head_ == (tail_ + 1) % size_) {
-      std::ptrdiff_t newSize = size_ * 2;
-      Complex* newData = new Complex[newSize];
-      std::ptrdiff_t count = Count();
-      for (std::ptrdiff_t i = 0; i < count; ++i) {
-        newData[i] = data_[(head_ + i) % size_];
-      }
-      delete[] data_;
-      data_ = newData;
-      size_ = newSize;
-      head_ = 0;
-      tail_ = Count() - 1;
-    }
-    else {
-      tail_ = (tail_ + 1) % size_;
-    }
+    Complex* newData = new Complex[size_ + 1];
+    std::copy(data_, data_ + size_, newData);
+    delete[] data_;
+    data_ = newData;
+    data_[size_] = val;
+    ++size_;
+    ++tail_;
   }
-  data_[tail_] = val;
 }
 
 Complex& QueueArr::Top() {
@@ -81,13 +98,9 @@ const Complex& QueueArr::Top() const {
 }
 
 void QueueArr::Clear() noexcept {
-  head_ = -1;
-  tail_ = -1;
-}
-
-std::ptrdiff_t QueueArr::Count() const {
-  if (head_ == -1 || tail_ == -1) {
-    return 0;
-  }
-  return (tail_ - head_ + size_) % size_ + 1;
+  delete[] data_;
+  data_ = nullptr;
+  size_ = 0;
+  head_ = 0;
+  tail_ = 0;
 }
