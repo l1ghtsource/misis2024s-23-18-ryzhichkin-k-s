@@ -3,8 +3,48 @@
 #include <algorithm>
 #include <stdexcept>
 
+QueueLst::QueueLst(const QueueLst& rhs) {
+  Node* current = rhs.head;
+  while (current != nullptr) {
+    Push(current->data);
+    current = current->next;
+  }
+}
+
+QueueLst::QueueLst(QueueLst&& rhs) noexcept : head(rhs.head), tail(rhs.tail) {
+  rhs.head = nullptr;
+  rhs.tail = nullptr;
+}
+
+QueueLst::~QueueLst() {
+  Clear();
+}
+
+QueueLst& QueueLst::operator=(const QueueLst& rhs) {
+  if (this != &rhs) {
+    Clear();
+    Node* current = rhs.head;
+    while (current != nullptr) {
+      Push(current->data);
+      current = current->next;
+    }
+  }
+  return *this;
+}
+
+QueueLst& QueueLst::operator=(QueueLst&& rhs) noexcept {
+  if (this != &rhs) {
+    Clear();
+    head = rhs.head;
+    tail = rhs.tail;
+    rhs.head = nullptr;
+    rhs.tail = nullptr;
+  }
+  return *this;
+}
+
 bool QueueLst::IsEmpty() const noexcept {
-  return (head == nullptr);
+  return head == nullptr;
 }
 
 void QueueLst::Pop() noexcept {
@@ -12,20 +52,21 @@ void QueueLst::Pop() noexcept {
     Node* temp = head;
     head = head->next;
     delete temp;
-  }
-  else {
-    tail = nullptr;
+    if (head == nullptr) {
+      tail = nullptr;
+    }
   }
 }
 
-void QueueLst::Push(const Complex& v) {
-  Node* g = new Node(v);
+void QueueLst::Push(const Complex& val) {
+  Node* newNode = new Node(val);
   if (IsEmpty()) {
-    head = tail = g;
+    head = newNode;
+    tail = newNode;
   }
   else {
-    tail->next = g;
-    tail = tail->next;
+    tail->next = newNode;
+    tail = newNode;
   }
 }
 
@@ -34,7 +75,7 @@ Complex& QueueLst::Top() {
     return head->data;
   }
   else {
-    throw std::logic_error("Queuelst - try get top from empty queue.");
+    throw std::out_of_range("Queuelst - try get top from empty queue.");
   }
 }
 
@@ -43,7 +84,7 @@ const Complex& QueueLst::Top() const {
     return head->data;
   }
   else {
-    throw std::logic_error("Queuelst - try get top from empty queue.");
+    throw std::out_of_range("Queuelst - try get top from empty queue.");
   }
 }
 

@@ -10,22 +10,22 @@
 class QueueLst {
 public:
   QueueLst() = default;
-  QueueLst(const QueueLst&) = default;
-  QueueLst(QueueLst&&) = default;
+  QueueLst(const QueueLst&);
+  QueueLst(QueueLst&&) noexcept;
 
-  ~QueueLst() = default;
+  ~QueueLst();
 
-  QueueLst& operator=(const QueueLst&) = default;
-  QueueLst& operator=(QueueLst&&) = default;
+  QueueLst& operator=(const QueueLst& rhs);
+  QueueLst& operator=(QueueLst&& rhs) noexcept;
 
-  [[nodiscard]] bool IsEmpty() const noexcept;
+  bool IsEmpty() const noexcept;
 
   void Pop() noexcept;
 
   void Push(const Complex& val);
 
-  [[nodiscard]] Complex& Top();
-  [[nodiscard]] const Complex& Top() const;
+  Complex& Top();
+  const Complex& Top() const;
 
   void Clear() noexcept;
 
