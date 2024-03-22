@@ -1,5 +1,7 @@
 #include <rational/rational.hpp>
 
+Rational::Rational() : num_{ 0 }, den_{ 1 } {}
+
 Rational::Rational(const int64_t num, const int64_t den) {
   if (0 == den) {
     throw std::invalid_argument("Zero denumenator in Rational ctor");
@@ -9,36 +11,57 @@ Rational::Rational(const int64_t num, const int64_t den) {
   simplify();
 }
 
-Rational& Rational::operator+=(const Rational& rhs) noexcept {
+int64_t Rational::num() const { 
+  return num_; 
+}
+
+int64_t Rational::den() const { 
+  return den_; 
+}
+
+Rational& Rational::operator=(const Rational& rhs) {
+  if (this != &rhs) {
+    num_ = rhs.num_;
+    den_ = rhs.den_;
+    simplify();
+  }
+  return *this;
+}
+
+Rational& Rational::operator=(const int64_t rhs) {
+  return operator=(Rational(rhs, 1));
+}
+
+Rational& Rational::operator+=(const Rational& rhs) {
   num_ = num_ * rhs.den_ + den_ * rhs.num_;
   den_ = den_ * rhs.den_;
   simplify();
   return *this;
 }
 
-Rational& Rational::operator+=(const int64_t rhs) noexcept {
+Rational& Rational::operator+=(const int64_t rhs) {
   return operator+=(Rational(rhs));
 }
 
-Rational& Rational::operator-=(const Rational& rhs) noexcept {
+Rational& Rational::operator-=(const Rational& rhs) {
   num_ = num_ * rhs.den_ - den_ * rhs.num_;
   den_ = den_ * rhs.den_;
   simplify();
   return *this;
 }
 
-Rational& Rational::operator-=(const int64_t rhs) noexcept {
+Rational& Rational::operator-=(const int64_t rhs) {
   return operator-=(Rational(rhs));
 }
 
-Rational& Rational::operator*=(const Rational& rhs) noexcept {
+Rational& Rational::operator*=(const Rational& rhs) {
   num_ = num_ * rhs.num_;
   den_ = den_ * rhs.den_;
   simplify();
   return *this;
 }
 
-Rational& Rational::operator*=(const int64_t rhs) noexcept {
+Rational& Rational::operator*=(const int64_t rhs) {
   return operator*=(Rational(rhs));
 }
 
@@ -56,52 +79,124 @@ Rational& Rational::operator/=(const int64_t rhs) {
   return operator/=(Rational(rhs));
 }
 
-Rational operator+(const Rational& lhs, const Rational& rhs) noexcept {
-  return Rational(lhs) += rhs;
-};
-
-Rational operator+(const Rational& lhs, const int64_t rhs) noexcept {
-  return Rational(lhs) += Rational(rhs);
-};
-
-Rational operator+(const int64_t lhs, Rational& rhs) noexcept {
-  return Rational(lhs) += Rational(rhs);
-};
-
-Rational operator-(const Rational& lhs, const Rational& rhs) noexcept {
-  return Rational(lhs) -= rhs;
-};
-
-Rational operator-(const Rational& lhs, const int64_t rhs) noexcept {
-  return Rational(lhs) -= Rational(rhs);
-};
-
-Rational operator-(const int64_t lhs, Rational& rhs) noexcept {
-  return Rational(lhs) -= Rational(rhs);
-};
-
-Rational operator*(const Rational& lhs, const Rational& rhs) noexcept {
-  return Rational(lhs) *= rhs;
+bool operator==(const Rational& lhs, const Rational& rhs) {
+  return (lhs.num() == rhs.num() && lhs.den() == rhs.den());
 }
 
-Rational operator*(const Rational& lhs, const int64_t rhs) noexcept {
-  return Rational(lhs) *= Rational(rhs);
+bool operator==(const Rational& lhs, const int64_t rhs) {
+  return (lhs == Rational(rhs));
 }
 
-Rational operator*(const int64_t lhs, Rational& rhs) noexcept {
-  return Rational(lhs) *= Rational(rhs);
+bool operator==(const int64_t lhs, const Rational& rhs) {
+  return (Rational(lhs) == rhs);
+}
+
+bool operator!=(const Rational& lhs, const Rational& rhs) {
+  return !(lhs == rhs);
+}
+
+bool operator!=(const Rational& lhs, const int64_t rhs) {
+  return !(lhs == rhs);
+}
+
+bool operator!=(const int64_t lhs, const Rational& rhs) {
+  return !(lhs == rhs);
+}
+
+bool operator<(const Rational& lhs, const Rational& rhs) {
+  return (lhs.num() * rhs.den() < rhs.num() * lhs.den());
+}
+
+bool operator<(const Rational& lhs, const int64_t rhs) {
+  return (lhs < Rational(rhs));
+}
+
+bool operator<(const int64_t lhs, const Rational& rhs) {
+  return (Rational(lhs) < rhs);
+}
+
+bool operator<=(const Rational& lhs, const Rational& rhs) {
+  return (lhs.num() * rhs.den() <= rhs.num() * lhs.den());
+}
+
+bool operator<=(const Rational& lhs, const int64_t rhs) {
+  return (lhs <= Rational(rhs));
+}
+
+bool operator<=(const int64_t lhs, const Rational& rhs) {
+  return (Rational(lhs) <= rhs);
+}
+
+bool operator>(const Rational& lhs, const Rational& rhs) {
+  return (lhs.num() * rhs.den() > rhs.num() * lhs.den());
+}
+
+bool operator>(const Rational& lhs, const int64_t rhs) {
+  return (lhs > Rational(rhs));
+}
+
+bool operator>(const int64_t lhs, const Rational& rhs) {
+  return (Rational(lhs) > rhs);
+}
+
+bool operator>=(const Rational& lhs, const Rational& rhs) {
+  return (lhs.num() * rhs.den() >= rhs.num() * lhs.den());
+}
+
+bool operator>=(const Rational& lhs, const int64_t rhs) {
+  return (lhs >= Rational(rhs));
+}
+
+bool operator>=(const int64_t lhs, const Rational& rhs) {
+  return (Rational(lhs) >= rhs);
+}
+
+Rational operator+(const Rational& lhs, const Rational& rhs) {
+  return (Rational(lhs) += rhs);
+};
+
+Rational operator+(const Rational& lhs, const int64_t rhs) {
+  return (Rational(lhs) += Rational(rhs));
+};
+
+Rational operator+(const int64_t lhs, Rational& rhs) {
+  return (Rational(lhs) += Rational(rhs));
+};
+
+Rational operator-(const Rational& lhs, const Rational& rhs) {
+  return (Rational(lhs) -= rhs);
+};
+
+Rational operator-(const Rational& lhs, const int64_t rhs) {
+  return (Rational(lhs) -= Rational(rhs));
+};
+
+Rational operator-(const int64_t lhs, Rational& rhs) {
+  return (Rational(lhs) -= Rational(rhs));
+};
+
+Rational operator*(const Rational& lhs, const Rational& rhs) {
+  return (Rational(lhs) *= rhs);
+}
+
+Rational operator*(const Rational& lhs, const int64_t rhs) {
+  return (Rational(lhs) *= Rational(rhs));
+}
+
+Rational operator*(const int64_t lhs, Rational& rhs) {
+  return (Rational(lhs) *= Rational(rhs));
 }
 
 Rational operator/(const Rational& lhs, const Rational& rhs) {
-  return Rational(lhs) /= rhs;
+  return (Rational(lhs) /= rhs);
 }
 
 Rational operator/(const Rational& lhs, const int64_t rhs) {
-  return Rational(lhs) /= Rational(rhs);
+  return (Rational(lhs) /= Rational(rhs));
 }
 
 Rational operator/(const int64_t lhs, Rational& rhs) {
-  return Rational(lhs) /= Rational(rhs);
+  return (Rational(lhs) /= Rational(rhs));
 }
 
 std::ostream& Rational::writeTo(std::ostream& ostrm) const noexcept {

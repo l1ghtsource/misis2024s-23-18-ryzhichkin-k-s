@@ -8,37 +8,31 @@
 
 class Rational {
 public:
-  Rational() = default;
-  explicit Rational(const int64_t num) noexcept : num_(num) { };
-  Rational(const Rational& rhs) = default;
+  Rational();
+  Rational(int64_t num) : num_{ num }, den_{ 1 } { };
+  Rational(const Rational&) = default;
   Rational(Rational&&) = default;
-  Rational(const int64_t num, const int64_t den);
-
-  Rational& operator=(const Rational&) = default;
-  Rational& operator=(Rational&&) = default;
+  Rational(int64_t num, int64_t den);
 
   ~Rational() = default;
 
-  int64_t num() const noexcept { return num_; }
-  int64_t den() const noexcept { return den_; }
+  Rational& operator=(const Rational& rhs);
+  Rational& operator=(const int64_t rhs);
+  Rational& operator=(Rational&&) = default;
 
-  Rational operator-() const noexcept { return { -num_, den_ }; }
+  int64_t num() const;
+  int64_t den() const;
 
-  bool operator==(const Rational& rhs) const noexcept { return (num_ * rhs.den_ - rhs.num_ * den_) == 0; }
-  bool operator!=(const Rational& rhs) const noexcept { return !operator==(rhs); }
-  bool operator>(const Rational& rhs) const noexcept { return (num_ * rhs.den_ - rhs.num_ * den_) > 0; }
-  bool operator<(const Rational& rhs) const noexcept { return (num_ * rhs.den_ - rhs.num_ * den_) < 0; }
-  bool operator>=(const Rational& rhs) const noexcept { return (num_ * rhs.den_ - rhs.num_ * den_) >= 0; }
-  bool operator<=(const Rational& rhs) const noexcept { return (num_ * rhs.den_ - rhs.num_ * den_) <= 0; }
+  Rational operator-() const noexcept { return Rational{ -num_, den_ }; }
 
-  Rational& operator+=(const Rational& rhs) noexcept;
-  Rational& operator+=(const int64_t rhs) noexcept;
+  Rational& operator+=(const Rational& rhs);
+  Rational& operator+=(const int64_t rhs);
 
-  Rational& operator-=(const Rational& rhs) noexcept;
-  Rational& operator-=(const int64_t rhs) noexcept;
+  Rational& operator-=(const Rational& rhs);
+  Rational& operator-=(const int64_t rhs);
 
-  Rational& operator*=(const Rational& rhs) noexcept;
-  Rational& operator*=(const int64_t rhs) noexcept;
+  Rational& operator*=(const Rational& rhs);
+  Rational& operator*=(const int64_t rhs);
 
   Rational& operator/=(const Rational& rhs);
   Rational& operator/=(const int64_t rhs);
@@ -70,17 +64,41 @@ private:
   static const char slash{ '/' };
 };
 
-Rational operator+(const Rational& lhs, const Rational& rhs) noexcept;
-Rational operator+(const Rational& lhs, const int64_t rhs) noexcept;
-Rational operator+(const int64_t lhs, Rational& rhs) noexcept;
+bool operator==(const Rational& lhs, const Rational& rhs);
+bool operator==(const int64_t lhs, const Rational& rhs);
+bool operator==(const Rational& lhs, const int64_t rhs);
 
-Rational operator-(const Rational& lhs, const Rational& rhs) noexcept;
-Rational operator-(const Rational& lhs, const int64_t rhs) noexcept;
-Rational operator-(const int64_t lhs, Rational& rhs) noexcept;
+bool operator!=(const Rational& lhs, const Rational& rhs);
+bool operator!=(const Rational& lhs, const int64_t rhs);
+bool operator!=(const int64_t lhs, const Rational& rhs);
 
-Rational operator*(const Rational& lhs, const Rational& rhs) noexcept;
-Rational operator*(const Rational& lhs, const int64_t rhs) noexcept;
-Rational operator*(const int64_t lhs, Rational& rhs) noexcept;
+bool operator<(const Rational& lhs, const Rational& rhs);
+bool operator<(const Rational& lhs, const int64_t rhs);
+bool operator<(const int64_t lhs, const Rational& rhs);
+
+bool operator>(const Rational& lhs, const Rational& rhs);
+bool operator>(const Rational& lhs, const int64_t rhs);
+bool operator>(const int64_t lhs, const Rational& rhs);
+
+bool operator<=(const Rational& lhs, const Rational& rhs);
+bool operator<=(const Rational& lhs, const int64_t rhs);
+bool operator<=(const int64_t lhs, const Rational& rhs);
+
+bool operator>=(const Rational& lhs, const Rational& rhs);
+bool operator>=(const Rational& lhs, const int64_t rhs);
+bool operator>=(const int64_t lhs, const Rational& rhs);
+
+Rational operator+(const Rational& lhs, const Rational& rhs);
+Rational operator+(const Rational& lhs, const int64_t rhs);
+Rational operator+(const int64_t lhs, Rational& rhs);
+
+Rational operator-(const Rational& lhs, const Rational& rhs);
+Rational operator-(const Rational& lhs, const int64_t rhs);
+Rational operator-(const int64_t lhs, Rational& rhs);
+
+Rational operator*(const Rational& lhs, const Rational& rhs);
+Rational operator*(const Rational& lhs, const int64_t rhs);
+Rational operator*(const int64_t lhs, Rational& rhs);
 
 Rational operator/(const Rational& lhs, const Rational& rhs);
 Rational operator/(const Rational& lhs, const int64_t rhs);
