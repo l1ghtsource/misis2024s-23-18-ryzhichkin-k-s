@@ -10,13 +10,13 @@
 class StackLst {
 public:
   StackLst() = default;
-  StackLst(const StackLst&) = default;
-  StackLst(StackLst&&) = default;
+  StackLst(const StackLst& rhs);
+  StackLst(StackLst&& rhs) noexcept;
 
   ~StackLst() = default;
 
-  StackLst& operator=(const StackLst&) = default;
-  StackLst& operator=(StackLst&&) = default;
+  StackLst& operator=(const StackLst& rhs);
+  StackLst& operator=(StackLst&& rhs) noexcept;
 
   bool IsEmpty() const noexcept;
 
@@ -24,15 +24,16 @@ public:
 
   void Push(const Complex& val);
 
-  [[nodiscard]] Complex& Top();
-  [[nodiscard]] const Complex& Top() const;
+  Complex& Top();
+  const Complex& Top() const;
 
   void Clear() noexcept;
 
 private:
   struct Node {
-    Complex v;
+    Complex data;
     Node* next = nullptr;
+    Node(Complex v) : data(v), next(nullptr) {}
   };
   Node* head = nullptr;
 };
