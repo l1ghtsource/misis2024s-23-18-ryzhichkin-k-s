@@ -10,14 +10,14 @@
 class StackArr {
 public:
   StackArr() = default;
+  StackArr(const StackArr& rhs);
+  StackArr(StackArr&& rhs) noexcept;
+  StackArr(const Complex& rhs);
 
-  StackArr(const StackArr&) = default;
-  StackArr(StackArr&&) = default;
+  ~StackArr();
 
-  ~StackArr() = default;
-
-  StackArr& operator=(const StackArr&) = default;
-  StackArr& operator=(StackArr&&) = default;
+  StackArr& operator=(const StackArr& rhs);
+  StackArr& operator=(StackArr&& rhs) noexcept;
 
   bool IsEmpty() const noexcept;
 
@@ -25,15 +25,16 @@ public:
 
   void Push(const Complex& val);
 
-  [[nodiscard]] Complex& Top();
-  [[nodiscard]] const Complex& Top() const;
+  Complex& Top();
+  const Complex& Top() const;
 
   void Clear() noexcept;
 
 private:
   std::ptrdiff_t size_ = 0;
-  std::ptrdiff_t i_top_ = -1;
+  std::ptrdiff_t capacity_ = 0;
   Complex* data_ = nullptr;
+  Complex* head_ = nullptr;
 };
 
 #endif
