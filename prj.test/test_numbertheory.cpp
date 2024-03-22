@@ -46,5 +46,7 @@ int main() {
 
   std::cout << NT.ModFib(10, 54) << std::endl;
 
+  std::cout << NT.Pisano(10) << std::endl;
+
   return 0;
 }
