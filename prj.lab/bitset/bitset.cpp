@@ -42,10 +42,6 @@ bool BitSet::operator!=(const BitSet& rhs) const {
   return !(*this == rhs);
 }
 
-bool BitSet::operator[](uint32_t idx) const {
-  return Get(idx);
-}
-
 BitSet BitSet::operator~() const {
   BitSet result(*this);
   for (uint32_t i = 0; i < b.size(); ++i) {
@@ -153,7 +149,7 @@ bool BitSet::Get(uint32_t idx) const {
   return (b[idx / 32] >> (idx % 32)) & 1;
 }
 
-void BitSet::Set(uint32_t idx, bool val) {
+void BitSet::Set(uint32_t idx, const bool val) {
   if (idx < 0) {
     throw std::logic_error("Index should be >= 0");
   }
@@ -170,4 +166,9 @@ void BitSet::Set(uint32_t idx, bool val) {
   else {
     b[idx / 32] &= ~(1u << (idx % 32));
   }
+}
+
+void BitSet::Fill(const bool val) noexcept {
+  uint32_t fill_value = val ? UINT32_MAX : 0;
+  std::fill(b.begin(), b.end(), fill_value);
 }

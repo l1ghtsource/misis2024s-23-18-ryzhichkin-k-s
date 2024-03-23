@@ -16,5 +16,11 @@ TEST_CASE("all in one") {
   CHECK_EQ(bs.Get(14), 1);
   bs.Set(3, 0);
   CHECK_EQ(bs.Get(3), 0);
+  bs.Resize(5);
+  bs.Fill(1);
+  CHECK_EQ(bs.Get(0), 1);
+  CHECK_EQ(bs.Get(4), 1);
+  bs.Set(3, 0);
+  CHECK_EQ(bs.Get(3), 0);
+  CHECK_EQ(bs.Get(2), 1);
 }
-

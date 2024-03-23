@@ -21,7 +21,6 @@ public:
 
   bool operator==(const BitSet& rhs) const;
   bool operator!=(const BitSet& rhs) const;
-  bool operator[](uint32_t idx) const;
 
   BitSet operator~() const;
   BitSet operator&(const BitSet& other) const;
@@ -36,7 +35,8 @@ public:
   void Resize(uint32_t size);
 
   bool Get(uint32_t idx) const;
-  void Set(uint32_t idx, bool val);
+  void Set(uint32_t idx, const bool val);
+  void Fill(const bool val) noexcept;
 
 private:
   uint32_t size_ = 0;
