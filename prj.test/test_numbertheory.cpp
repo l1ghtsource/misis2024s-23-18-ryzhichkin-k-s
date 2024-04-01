@@ -55,5 +55,8 @@ int main() {
   std::cout << NT.FindPrimitiveRoots(13) << std::endl;
   std::cout << NT.FindPrimitiveRoots(15) << std::endl;
 
+  std::cout << NT.IsSquareFree(124579) << std::endl;
+  std::cout << NT.IsSquareFree(4123) << std::endl;
+
   return 0;
 }

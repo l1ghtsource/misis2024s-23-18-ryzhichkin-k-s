@@ -2,7 +2,15 @@
 
 // checking for freedom from squares
 bool NumberTheory::IsSquareFree(int64_t n) {
-  return 0;
+  if (n <= 1) {
+    return true;
+  }
+  for (int64_t i = 2; i * i <= n; ++i) {
+    if (n % (i * i) == 0) {
+      return false;
+    }
+  }
+  return true;
 }
 
 // Möbius function: mu(n) = 0 if n is free from squares, otherwise mu(n) = (-1)^k, where k is the number of prime divisors of n
