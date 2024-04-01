@@ -48,5 +48,9 @@ int main() {
 
   std::cout << NT.Pisano(10) << std::endl;
 
+  std::cout << NT.IsPrimitiveRoot(2, 13) << std::endl;
+  std::cout << NT.IsPrimitiveRoot(3, 7) << std::endl;
+  std::cout << NT.IsPrimitiveRoot(7, 15) << std::endl;
+
   return 0;
 }
