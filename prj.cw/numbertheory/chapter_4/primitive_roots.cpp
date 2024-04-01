@@ -18,6 +18,14 @@ bool NumberTheory::IsPrimitiveRoot(int64_t g, int64_t m) {
 }
 
 // finding primal roots modulo m
-int64_t NumberTheory::FindPrimitiveRoot(int64_t m) {
-  return 0;
+std::vector<int64_t> NumberTheory::FindPrimitiveRoots(int64_t m) {
+  std::vector<int64_t> roots;
+
+  for (int64_t g = 2; g < m; ++g) {
+    if (IsPrimitiveRoot(g, m)) {
+      roots.push_back(g);
+    }
+  }
+
+  return roots;
 }

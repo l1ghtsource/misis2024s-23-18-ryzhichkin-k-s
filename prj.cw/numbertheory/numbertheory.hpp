@@ -78,7 +78,7 @@ public:
   bool IsPrimitiveRoot(int64_t g, int64_t m);
 
   // finding primal roots modulo m
-  int64_t FindPrimitiveRoot(int64_t m);
+  std::vector<int64_t> FindPrimitiveRoots(int64_t m);
 
   // Pollard's rho factorization algorithm
   std::vector<int64_t> RhoPollard(int64_t n);
