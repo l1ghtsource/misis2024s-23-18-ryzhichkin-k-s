@@ -17,7 +17,7 @@ std::vector<int64_t> NumberTheory::SolveLinearCongruence(int64_t a, int64_t b, i
   int64_t d = Gcd(a, m);
 
   if (b % d != 0) {
-    return std::vector<int64_t>{ 0 }; // нет решений
+    return std::vector<int64_t>{ 0 }; // no solutions
   }
 
   a /= d;
