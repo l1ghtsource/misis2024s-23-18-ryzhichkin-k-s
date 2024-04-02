@@ -70,5 +70,9 @@ int main() {
   std::cout << NT.LegendreSymbol(6, 31) << std::endl;
   std::cout << NT.LegendreSymbol(78678, 31) << std::endl;
 
+  std::cout << NT.JacobiSymbol(34, 5345) << std::endl;
+  std::cout << NT.JacobiSymbol(345, 565) << std::endl;
+  std::cout << NT.JacobiSymbol(1234, 4567) << std::endl;
+
   return 0;
 }

@@ -96,7 +96,7 @@ public:
   int64_t LegendreSymbol(int64_t a, int64_t p);
 
   // Jacobi symbol: (a/P) = (a/p_1)(a/p_2)...(a/p_n), where (a/p_i) are Lejandre symbols
-  int64_t JacobiSymbol(int64_t a, int64_t p);
+  int64_t JacobiSymbol(int64_t a, int64_t n);
 
   // simplicity test: accepts a number n and a simplicity test method (list of methods: [sqrt, fermat, frobenius, millerrabin, bpsw]).
   bool IsPrime(int64_t n, std::string method="sqrt");
