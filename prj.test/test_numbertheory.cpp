@@ -58,5 +58,9 @@ int main() {
   std::cout << NT.IsSquareFree(124579) << std::endl;
   std::cout << NT.IsSquareFree(4123) << std::endl;
 
+  std::cout << NT.Mobius(12) << std::endl;
+  std::cout << NT.Mobius(1234) << std::endl;
+  std::cout << NT.Mobius(12345) << std::endl;
+
   return 0;
 }

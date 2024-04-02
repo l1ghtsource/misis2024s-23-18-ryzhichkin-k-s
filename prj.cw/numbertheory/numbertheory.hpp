@@ -86,7 +86,7 @@ public:
   // checking for freedom from squares
   bool IsSquareFree(int64_t n);
   
-  // Möbius function: mu(n) = 0 if n is free from squares, otherwise mu(n) = (-1)^k, where k is the number of prime divisors of n
+  // Möbius function: mu(n) = 0 if n isn't free from squares, otherwise mu(n) = (-1)^k, where k is the number of prime divisors of n
   int64_t Mobius(int64_t n);
 
   // check whether a is a quadratic deduction over a prime modulo p
