@@ -62,5 +62,9 @@ int main() {
   std::cout << NT.Mobius(1234) << std::endl;
   std::cout << NT.Mobius(12345) << std::endl;
 
+  std::cout << NT.IsQuadraticResidue(25, 31) << std::endl;
+  std::cout << NT.IsQuadraticResidue(7, 31) << std::endl;
+  std::cout << NT.IsQuadraticResidue(11, 31) << std::endl;
+
   return 0;
 }

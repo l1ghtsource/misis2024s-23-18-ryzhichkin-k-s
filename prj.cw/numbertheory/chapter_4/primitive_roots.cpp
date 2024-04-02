@@ -2,6 +2,10 @@
 
 // check whether g is a prime root modulo m
 bool NumberTheory::IsPrimitiveRoot(int64_t g, int64_t m) {
+  if (m <= 1) {
+    throw std::invalid_argument("Modulo should be > 1");
+  }
+
   int64_t p = Phi(m);
 
   if (ModPow(g, p, m) != 1) {
@@ -19,6 +23,10 @@ bool NumberTheory::IsPrimitiveRoot(int64_t g, int64_t m) {
 
 // finding primal roots modulo m
 std::vector<int64_t> NumberTheory::FindPrimitiveRoots(int64_t m) {
+  if (m <= 1) {
+    throw std::invalid_argument("Modulo should be > 1");
+  }
+
   std::vector<int64_t> roots;
 
   for (int64_t g = 2; g < m; ++g) {
