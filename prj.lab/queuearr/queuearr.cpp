@@ -3,84 +3,118 @@
 #include <algorithm>
 #include <stdexcept>
 
-QueueArr::QueueArr(const QueueArr& rhs) : size_(rhs.size_), head_(0), tail_(rhs.size_) {
-  data_ = new Complex[size_];
-  std::copy(rhs.data_, rhs.data_ + size_, data_);
+std::ptrdiff_t QueueArr::Count() const {
+  return IsEmpty() ? 0 : (tail_ + size_ - head_) % size_ + 1;
 }
 
-QueueArr::QueueArr(const Complex& rhs) : size_(1), head_(0), tail_(1) {
-  data_ = new Complex[size_];
-  *data_ = rhs;
+QueueArr::QueueArr(const QueueArr& rhs) {
+  if (!rhs.IsEmpty()) {
+    std::ptrdiff_t count = rhs.Count();
+    head_ = 0;
+    tail_ = count - 1;
+    size_ = (count + 4) / 4 * 4;
+    data_ = new Complex[size_];
+    if (rhs.head_ < rhs.tail_) {
+      std::copy(rhs.data_ + rhs.head_, rhs.data_ + rhs.tail_ + 1, data_);
+    }
+    else {
+      std::copy(rhs.data_ + rhs.head_, rhs.data_ + rhs.size_, data_);
+      std::copy(rhs.data_, rhs.data_ + rhs.tail_ + 1, data_ + rhs.size_ - rhs.head_);
+    }
+  }
 }
 
-QueueArr::QueueArr(QueueArr&& rhs) noexcept : data_(rhs.data_), size_(rhs.size_), head_(rhs.head_), tail_(rhs.tail_) {
-  rhs.data_ = nullptr;
-  rhs.size_ = 0;
-  rhs.head_ = 0;
-  rhs.tail_ = 0;
+QueueArr::QueueArr(QueueArr&& rhs) noexcept {
+  std::swap(size_, rhs.size_);
+  std::swap(data_, rhs.data_);
+  std::swap(head_, rhs.head_);
+  std::swap(tail_, rhs.tail_);
 }
 
 QueueArr::~QueueArr() {
-  Clear();
+  delete[] data_;
 }
 
 QueueArr& QueueArr::operator=(const QueueArr& rhs) {
   if (this != &rhs) {
-    delete[] data_;
-    size_ = rhs.size_;
-    head_ = 0;
-    tail_ = rhs.size_;
-    data_ = new Complex[size_];
-    std::copy(rhs.data_, rhs.data_ + size_, data_);
+    std::ptrdiff_t count = rhs.Count();
+    if (!count) {
+      head_ = -1;
+    }
+    else {
+      if (size_ < count) {
+        size_ = (count + 4) / 4 * 4;
+        delete[] data_;
+        data_ = new Complex[size_];
+      }
+      if (rhs.head_ < rhs.tail_) {
+        std::copy(rhs.data_ + rhs.head_, rhs.data_ + rhs.tail_ + 1, data_);
+      }
+      else {
+        std::copy(rhs.data_ + rhs.head_, rhs.data_ + rhs.size_, data_);
+        std::copy(rhs.data_, rhs.data_ + rhs.tail_ + 1, data_ + rhs.size_ - rhs.head_);
+      }
+      head_ = 0;
+      tail_ = count - 1;
+    }
   }
   return *this;
 }
 
 QueueArr& QueueArr::operator=(QueueArr&& rhs) noexcept {
   if (this != &rhs) {
-    delete[] data_;
-
-    data_ = rhs.data_;
-    size_ = rhs.size_;
-    head_ = rhs.head_;
-    tail_ = rhs.tail_;
-
-    rhs.data_ = nullptr;
-    rhs.size_ = 0;
-    rhs.head_ = 0;
-    rhs.tail_ = 0;
+    std::swap(size_, rhs.size_);
+    std::swap(data_, rhs.data_);
+    std::swap(head_, rhs.head_);
+    std::swap(tail_, rhs.tail_);
   }
   return *this;
 }
 
 bool QueueArr::IsEmpty() const noexcept {
-  return (size_ == 0);
+  return head_ < 0;
 }
 
 void QueueArr::Pop() noexcept {
   if (!IsEmpty()) {
-    ++head_;
-    --size_;
+    if (head_ != tail_) {
+      head_ = (head_ + 1) % size_;
+    }
+    else {
+      head_ = -1;
+    }
   }
 }
 
 void QueueArr::Push(const Complex& val) {
+  if (data_ == nullptr) {
+    size_ = 2;
+    data_ = new Complex[size_];
+  }
   if (IsEmpty()) {
-    data_ = new Complex[1];
-    data_[0] = val;
-    size_ = 1;
     head_ = 0;
-    tail_ = 1;
+    tail_ = 0;
   }
   else {
-    Complex* newData = new Complex[size_ + 1];
-    std::copy(data_, data_ + size_, newData);
-    delete[] data_;
-    data_ = newData;
-    data_[size_] = val;
-    ++size_;
-    ++tail_;
+    if (head_ == (tail_ + 1) % size_) {
+      Complex* buf = new Complex[size_ * 2];
+      std::swap(buf, data_);
+      if (head_ < tail_) {
+        std::copy(buf + head_, buf + tail_ + 1, data_);
+      }
+      else {
+        std::copy(buf + head_, buf + size_, data_);
+        std::copy(buf, buf + tail_ + 1, data_ + tail_ - head_);
+      }
+      delete[] buf;
+      size_ *= 2;
+      tail_ = Count();
+    }
+    else {
+      tail_ = (tail_ + 1) % size_;
+    }
   }
+  data_[tail_] = val;
 }
 
 Complex& QueueArr::Top() {
@@ -98,9 +132,5 @@ const Complex& QueueArr::Top() const {
 }
 
 void QueueArr::Clear() noexcept {
-  delete[] data_;
-  data_ = nullptr;
-  size_ = 0;
-  head_ = 0;
-  tail_ = 0;
+  head_ = -1;
 }

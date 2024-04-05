@@ -11,7 +11,6 @@ class QueueArr {
 public:
   QueueArr() = default;
   QueueArr(const QueueArr& rhs);
-  QueueArr(const Complex& rhs);
   QueueArr(QueueArr&& rhs) noexcept;
 
   ~QueueArr();
@@ -33,8 +32,9 @@ public:
 private:
   Complex* data_ = nullptr;
   std::ptrdiff_t size_ = 0;
-  std::ptrdiff_t head_ = 0;
-  std::ptrdiff_t tail_ = 0;
+  std::ptrdiff_t head_ = -1;
+  std::ptrdiff_t tail_ = -1;
+  std::ptrdiff_t Count() const;
 };
 
 #endif
