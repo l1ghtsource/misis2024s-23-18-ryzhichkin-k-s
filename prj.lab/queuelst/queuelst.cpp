@@ -4,14 +4,15 @@
 #include <stdexcept>
 
 QueueLst::QueueLst(const QueueLst& rhs) {
-  Node* current = rhs.head;
+  Node* current = rhs.head.get();
   while (current != nullptr) {
     Push(current->data);
-    current = current->next;
+    current = current->next.get();
   }
 }
 
-QueueLst::QueueLst(QueueLst&& rhs) noexcept : head(rhs.head), tail(rhs.tail) {
+QueueLst::QueueLst(QueueLst&& rhs) noexcept
+  : head(std::move(rhs.head)), tail(std::move(rhs.tail)) {
   rhs.head = nullptr;
   rhs.tail = nullptr;
 }
@@ -23,10 +24,10 @@ QueueLst::~QueueLst() {
 QueueLst& QueueLst::operator=(const QueueLst& rhs) {
   if (this != &rhs) {
     Clear();
-    Node* current = rhs.head;
+    Node* current = rhs.head.get();
     while (current != nullptr) {
       Push(current->data);
-      current = current->next;
+      current = current->next.get();
     }
   }
   return *this;
@@ -35,8 +36,8 @@ QueueLst& QueueLst::operator=(const QueueLst& rhs) {
 QueueLst& QueueLst::operator=(QueueLst&& rhs) noexcept {
   if (this != &rhs) {
     Clear();
-    head = rhs.head;
-    tail = rhs.tail;
+    head = std::move(rhs.head);
+    tail = std::move(rhs.tail);
     rhs.head = nullptr;
     rhs.tail = nullptr;
   }
@@ -49,9 +50,7 @@ bool QueueLst::IsEmpty() const noexcept {
 
 void QueueLst::Pop() noexcept {
   if (!IsEmpty()) {
-    Node* temp = head;
-    head = head->next;
-    delete temp;
+    head = std::move(head->next);
     if (head == nullptr) {
       tail = nullptr;
     }
@@ -59,14 +58,14 @@ void QueueLst::Pop() noexcept {
 }
 
 void QueueLst::Push(const Complex& val) {
-  Node* newNode = new Node(val);
+  std::unique_ptr<Node> newNode = std::make_unique<Node>(val);
   if (IsEmpty()) {
-    head = newNode;
-    tail = newNode;
+    head = std::move(newNode);
+    tail = head.get();
   }
   else {
-    tail->next = newNode;
-    tail = newNode;
+    tail->next = std::move(newNode);
+    tail = tail->next.get();
   }
 }
 
@@ -89,7 +88,6 @@ const Complex& QueueLst::Top() const {
 }
 
 void QueueLst::Clear() noexcept {
-  while (!IsEmpty()) {
-    Pop();
-  }
+  head = nullptr;
+  tail = nullptr;
 }

@@ -3,14 +3,15 @@
 #include <stdexcept>
 
 QueueLstPr::QueueLstPr(const QueueLstPr& rhs) {
-  Node* curr = rhs.head;
-  while (curr) {
-    Push(curr->data);
-    curr = curr->next;
+  Node* current = rhs.head.get();
+  while (current != nullptr) {
+    Push(current->data);
+    current = current->next.get();
   }
 }
 
-QueueLstPr::QueueLstPr(QueueLstPr&& rhs) noexcept : head(rhs.head), tail(rhs.tail) {
+QueueLstPr::QueueLstPr(QueueLstPr&& rhs) noexcept
+  : head(std::move(rhs.head)), tail(std::move(rhs.tail)) {
   rhs.head = nullptr;
   rhs.tail = nullptr;
 }
@@ -20,14 +21,13 @@ QueueLstPr::~QueueLstPr() {
 }
 
 QueueLstPr& QueueLstPr::operator=(const QueueLstPr& rhs) {
-  if (this == &rhs) {
-    return *this;
-  }
-  Clear();
-  Node* curr = rhs.head;
-  while (curr) {
-    Push(curr->data);
-    curr = curr->next;
+  if (this != &rhs) {
+    Clear();
+    Node* current = rhs.head.get();
+    while (current != nullptr) {
+      Push(current->data);
+      current = current->next.get();
+    }
   }
   return *this;
 }
@@ -35,8 +35,8 @@ QueueLstPr& QueueLstPr::operator=(const QueueLstPr& rhs) {
 QueueLstPr& QueueLstPr::operator=(QueueLstPr&& rhs) noexcept {
   if (this != &rhs) {
     Clear();
-    head = rhs.head;
-    tail = rhs.tail;
+    head = std::move(rhs.head);
+    tail = std::move(rhs.tail);
     rhs.head = nullptr;
     rhs.tail = nullptr;
   }
@@ -49,9 +49,7 @@ bool QueueLstPr::IsEmpty() const noexcept {
 
 void QueueLstPr::Pop() noexcept {
   if (head) {
-    Node* temp = head;
-    head = head->next;
-    delete temp;
+    head = std::move(head->next);
     if (!head) {
       tail = nullptr;
     }
@@ -59,25 +57,24 @@ void QueueLstPr::Pop() noexcept {
 }
 
 void QueueLstPr::Push(const float& val) {
-  Node* newNode = new Node(val);
-  if (!head) {
-    head = newNode;
-    tail = newNode;
-  }
-  else if (val < head->data) {
-    newNode->next = head;
-    head = newNode;
+  auto newNode = std::make_unique<Node>(val);
+  if (!head || val < head->data) {
+    newNode->next = std::move(head);
+    head = std::move(newNode);
+    if (!tail) {
+      tail = head.get();
+    }
   }
   else {
-    Node* current = head;
+    Node* current = head.get();
     while (current->next && val >= current->next->data) {
-      current = current->next;
+      current = current->next.get();
     }
-    newNode->next = current->next;
-    current->next = newNode;
-    if (!newNode->next) {
-      tail = newNode;
+    if (!current->next) {
+      tail = newNode.get();
     }
+    newNode->next = std::move(current->next);
+    current->next = std::move(newNode);
   }
 }
 
@@ -96,10 +93,6 @@ const float& QueueLstPr::Top() const {
 }
 
 void QueueLstPr::Clear() noexcept {
-  while (head) {
-    Node* temp = head;
-    head = head->next;
-    delete temp;
-  }
+  head = nullptr;
   tail = nullptr;
 }

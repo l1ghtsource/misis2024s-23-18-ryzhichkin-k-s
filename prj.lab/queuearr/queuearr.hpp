@@ -6,6 +6,7 @@
 #include <complex/complex.hpp>
 
 #include <cstddef>
+#include <memory>
 
 class QueueArr {
 public:
@@ -30,7 +31,7 @@ public:
   void Clear() noexcept;
 
 private:
-  Complex* data_ = nullptr;
+  std::unique_ptr<Complex[]> data_ = nullptr;
   std::ptrdiff_t size_ = 0;
   std::ptrdiff_t head_ = -1;
   std::ptrdiff_t tail_ = -1;

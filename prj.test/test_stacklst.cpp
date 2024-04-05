@@ -12,7 +12,6 @@ TEST_CASE("stacklst ctor") {
   StackLst stack_copy(stack);
   CHECK_EQ(stack_copy.IsEmpty(), 1);
 }
-
 TEST_CASE("push, pop, top, clear") {
   StackLst stack;
   CHECK_THROWS(void(stack.Top()));

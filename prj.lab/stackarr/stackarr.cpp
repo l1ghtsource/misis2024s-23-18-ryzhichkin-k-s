@@ -3,23 +3,20 @@
 #include <stdexcept>
 
 StackArr::StackArr(const StackArr& rhs)
-  : i_top_(rhs.i_top_) {
+  : size_(rhs.size_), i_top_(rhs.i_top_) {
   if (!rhs.IsEmpty()) {
-    size_ = ((i_top_ + 1) / 4 + 1) * 4;
-    data_ = new Complex[size_];
-    std::copy(rhs.data_, rhs.data_ + i_top_ + 1, data_);
+    data_ = std::make_unique<Complex[]>(size_);
+    std::copy(rhs.data_.get(), rhs.data_.get() + i_top_ + 1, data_.get());
   }
 }
 
-StackArr::StackArr(StackArr&& rhs) noexcept {
-  std::swap(rhs.size_, size_);
-  std::swap(rhs.i_top_, i_top_);
-  std::swap(rhs.data_, data_);
+StackArr::StackArr(StackArr&& rhs) noexcept
+  : size_(rhs.size_), i_top_(rhs.i_top_), data_(std::move(rhs.data_)) {
+  rhs.size_ = 0;
+  rhs.i_top_ = -1;
 }
 
-StackArr::~StackArr() {
-  delete[] data_;
-}
+StackArr::~StackArr() = default;
 
 StackArr& StackArr::operator=(const StackArr& rhs) {
   if (this != &rhs) {
@@ -28,26 +25,22 @@ StackArr& StackArr::operator=(const StackArr& rhs) {
     }
     if (size_ <= rhs.i_top_) {
       size_ = (rhs.i_top_ + 4) / 4 * 4;
-      Complex* buf = new Complex[size_];
-      std::swap(data_, buf);
-      delete[] buf;
+      data_ = std::make_unique<Complex[]>(size_);
     }
     i_top_ = rhs.i_top_;
-    std::copy(rhs.data_, rhs.data_ + i_top_ + 1, data_);
+    std::copy(rhs.data_.get(), rhs.data_.get() + i_top_ + 1, data_.get());
   }
   return *this;
 }
 
 StackArr& StackArr::operator=(StackArr&& rhs) noexcept {
   if (this != &rhs) {
-    if (!rhs.IsEmpty()) {
-      std::swap(size_, rhs.size_);
-      std::swap(i_top_, rhs.i_top_);
-      std::swap(data_, rhs.data_);
-    }
-    else {
-      Clear();
-    }
+    size_ = rhs.size_;
+    i_top_ = rhs.i_top_;
+    data_ = std::move(rhs.data_);
+
+    rhs.size_ = 0;
+    rhs.i_top_ = -1;
   }
   return *this;
 }
@@ -63,28 +56,27 @@ void StackArr::Pop() noexcept {
 }
 
 void StackArr::Push(const Complex& val) {
-  if (nullptr == data_) {
+  if (!data_) {
     size_ = 1;
-    data_ = new Complex[size_];
+    data_ = std::make_unique<Complex[]>(size_);
   }
   else if (size_ == i_top_ + 1) {
-    auto buf = new Complex[size_ * 2];
-    std::copy(data_, data_ + size_, buf);
-    std::swap(data_, buf);
-    delete[] buf;
+    auto new_data = std::make_unique<Complex[]>(size_ * 2);
+    std::copy(data_.get(), data_.get() + size_, new_data.get());
+    std::swap(data_, new_data);
     size_ *= 2;
   }
   data_[++i_top_] = val;
 }
 
-Complex& StackArr::Top() & {
+Complex& StackArr::Top()& {
   if (IsEmpty()) {
     throw std::logic_error("StackArr - try get top from empty stack.");
   }
   return data_[i_top_];
 }
 
-const Complex& StackArr::Top() const & {
+const Complex& StackArr::Top() const& {
   if (IsEmpty()) {
     throw std::logic_error("StackArr - try get top from empty stack.");
   }
@@ -93,4 +85,4 @@ const Complex& StackArr::Top() const & {
 
 void StackArr::Clear() noexcept {
   i_top_ = -1;
-};
+}

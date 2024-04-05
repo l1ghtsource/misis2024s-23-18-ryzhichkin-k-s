@@ -23,4 +23,3 @@ TEST_CASE("dynarr op[]") {
   CHECK_THROWS(void(arr[-1]));
   CHECK_THROWS(void(arr[arr.Size()]));
 }
-

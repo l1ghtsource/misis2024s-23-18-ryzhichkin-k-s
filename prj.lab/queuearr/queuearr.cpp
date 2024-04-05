@@ -13,27 +13,25 @@ QueueArr::QueueArr(const QueueArr& rhs) {
     head_ = 0;
     tail_ = count - 1;
     size_ = (count + 4) / 4 * 4;
-    data_ = new Complex[size_];
+    data_ = std::make_unique<Complex[]>(size_);
     if (rhs.head_ < rhs.tail_) {
-      std::copy(rhs.data_ + rhs.head_, rhs.data_ + rhs.tail_ + 1, data_);
+      std::copy(rhs.data_.get() + rhs.head_, rhs.data_.get() + rhs.tail_ + 1, data_.get());
     }
     else {
-      std::copy(rhs.data_ + rhs.head_, rhs.data_ + rhs.size_, data_);
-      std::copy(rhs.data_, rhs.data_ + rhs.tail_ + 1, data_ + rhs.size_ - rhs.head_);
+      std::copy(rhs.data_.get() + rhs.head_, rhs.data_.get() + rhs.size_, data_.get());
+      std::copy(rhs.data_.get(), rhs.data_.get() + rhs.tail_ + 1, data_.get() + rhs.size_ - rhs.head_);
     }
   }
 }
 
-QueueArr::QueueArr(QueueArr&& rhs) noexcept {
-  std::swap(size_, rhs.size_);
-  std::swap(data_, rhs.data_);
-  std::swap(head_, rhs.head_);
-  std::swap(tail_, rhs.tail_);
+QueueArr::QueueArr(QueueArr&& rhs) noexcept
+  : size_(rhs.size_), head_(rhs.head_), tail_(rhs.tail_), data_(std::move(rhs.data_)) {
+  rhs.size_ = 0;
+  rhs.head_ = -1;
+  rhs.tail_ = -1;
 }
 
-QueueArr::~QueueArr() {
-  delete[] data_;
-}
+QueueArr::~QueueArr() = default;
 
 QueueArr& QueueArr::operator=(const QueueArr& rhs) {
   if (this != &rhs) {
@@ -44,15 +42,14 @@ QueueArr& QueueArr::operator=(const QueueArr& rhs) {
     else {
       if (size_ < count) {
         size_ = (count + 4) / 4 * 4;
-        delete[] data_;
-        data_ = new Complex[size_];
+        data_ = std::make_unique<Complex[]>(size_);
       }
       if (rhs.head_ < rhs.tail_) {
-        std::copy(rhs.data_ + rhs.head_, rhs.data_ + rhs.tail_ + 1, data_);
+        std::copy(rhs.data_.get() + rhs.head_, rhs.data_.get() + rhs.tail_ + 1, data_.get());
       }
       else {
-        std::copy(rhs.data_ + rhs.head_, rhs.data_ + rhs.size_, data_);
-        std::copy(rhs.data_, rhs.data_ + rhs.tail_ + 1, data_ + rhs.size_ - rhs.head_);
+        std::copy(rhs.data_.get() + rhs.head_, rhs.data_.get() + rhs.size_, data_.get());
+        std::copy(rhs.data_.get(), rhs.data_.get() + rhs.tail_ + 1, data_.get() + rhs.size_ - rhs.head_);
       }
       head_ = 0;
       tail_ = count - 1;
@@ -63,10 +60,14 @@ QueueArr& QueueArr::operator=(const QueueArr& rhs) {
 
 QueueArr& QueueArr::operator=(QueueArr&& rhs) noexcept {
   if (this != &rhs) {
-    std::swap(size_, rhs.size_);
-    std::swap(data_, rhs.data_);
-    std::swap(head_, rhs.head_);
-    std::swap(tail_, rhs.tail_);
+    size_ = rhs.size_;
+    head_ = rhs.head_;
+    tail_ = rhs.tail_;
+    data_ = std::move(rhs.data_);
+
+    rhs.size_ = 0;
+    rhs.head_ = -1;
+    rhs.tail_ = -1;
   }
   return *this;
 }
@@ -87,9 +88,9 @@ void QueueArr::Pop() noexcept {
 }
 
 void QueueArr::Push(const Complex& val) {
-  if (data_ == nullptr) {
+  if (!data_) {
     size_ = 2;
-    data_ = new Complex[size_];
+    data_ = std::make_unique<Complex[]>(size_);
   }
   if (IsEmpty()) {
     head_ = 0;
@@ -97,16 +98,15 @@ void QueueArr::Push(const Complex& val) {
   }
   else {
     if (head_ == (tail_ + 1) % size_) {
-      Complex* buf = new Complex[size_ * 2];
-      std::swap(buf, data_);
+      auto new_data = std::make_unique<Complex[]>(size_ * 2);
       if (head_ < tail_) {
-        std::copy(buf + head_, buf + tail_ + 1, data_);
+        std::copy(data_.get() + head_, data_.get() + tail_ + 1, new_data.get());
       }
       else {
-        std::copy(buf + head_, buf + size_, data_);
-        std::copy(buf, buf + tail_ + 1, data_ + tail_ - head_);
+        std::copy(data_.get() + head_, data_.get() + size_, new_data.get());
+        std::copy(data_.get(), data_.get() + tail_ + 1, new_data.get() + size_ - head_);
       }
-      delete[] buf;
+      std::swap(data_, new_data);
       size_ *= 2;
       tail_ = Count();
     }

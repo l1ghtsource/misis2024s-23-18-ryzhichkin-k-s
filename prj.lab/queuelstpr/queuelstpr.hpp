@@ -4,6 +4,7 @@
 #define QUEUELSTPR_HPP
 
 #include <cstddef>
+#include <memory>
 
 class QueueLstPr {
 public:
@@ -30,10 +31,10 @@ public:
 private:
   struct Node {
     float data;
-    Node* next;
+    std::unique_ptr<Node> next;
     Node(float val) : data(val), next(nullptr) {}
   };
-  Node* head = nullptr;
+  std::unique_ptr<Node> head = nullptr;
   Node* tail = nullptr;
 };
 

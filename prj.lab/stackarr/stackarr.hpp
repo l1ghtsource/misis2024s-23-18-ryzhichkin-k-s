@@ -6,6 +6,7 @@
 #include <complex/complex.hpp>
 
 #include <cstddef>
+#include <memory>
 
 class StackArr {
 public:
@@ -32,7 +33,7 @@ public:
 private:
   std::ptrdiff_t size_ = 0;
   std::ptrdiff_t i_top_ = -1;
-  Complex* data_ = nullptr;
+  std::unique_ptr<Complex[]> data_ = nullptr;
 };
 
 #endif

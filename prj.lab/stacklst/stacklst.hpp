@@ -6,6 +6,7 @@
 #include <complex/complex.hpp>
 
 #include <cstddef>
+#include <memory>
 
 class StackLst {
 public:
@@ -13,7 +14,7 @@ public:
   StackLst(const StackLst& rhs);
   StackLst(StackLst&& rhs) noexcept;
 
-  ~StackLst() = default;
+  ~StackLst();
 
   StackLst& operator=(const StackLst& rhs);
   StackLst& operator=(StackLst&& rhs) noexcept;
@@ -32,10 +33,10 @@ public:
 private:
   struct Node {
     Complex data;
-    Node* next = nullptr;
+    std::unique_ptr<Node> next;
     Node(Complex v) : data(v), next(nullptr) {}
   };
-  Node* head = nullptr;
+  std::unique_ptr<Node> head;
 };
 
 #endif

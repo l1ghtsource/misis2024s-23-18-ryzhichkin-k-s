@@ -1,44 +1,45 @@
 #include <stacklst/stacklst.hpp>
 
-#include <stdexcept>
-
 StackLst::StackLst(const StackLst& rhs) {
   if (!rhs.head) {
     head = nullptr;
     return;
   }
-  Node* rhsPtr = rhs.head;
-  head = new Node(rhsPtr->data);
-  Node* current = head;
-  rhsPtr = rhsPtr->next;
+  Node* rhsPtr = rhs.head.get();
+  head = std::make_unique<Node>(rhsPtr->data);
+  Node* current = head.get();
+  rhsPtr = rhsPtr->next.get();
   while (rhsPtr) {
-    current->next = new Node(rhsPtr->data);
-    current = current->next;
-    rhsPtr = rhsPtr->next;
+    current->next = std::make_unique<Node>(rhsPtr->data);
+    current = current->next.get();
+    rhsPtr = rhsPtr->next.get();
   }
 }
 
-StackLst::StackLst(StackLst&& rhs) noexcept : head(rhs.head) {
+StackLst::StackLst(StackLst&& rhs) noexcept : head(std::move(rhs.head)) {
   rhs.head = nullptr;
+}
+
+StackLst::~StackLst() noexcept {
+  Clear();
 }
 
 StackLst& StackLst::operator=(const StackLst& rhs) {
   if (this == &rhs) {
     return *this;
   }
-  Clear();
+  head = nullptr;
   if (!rhs.head) {
-    head = nullptr;
     return *this;
   }
-  Node* rhsPtr = rhs.head;
-  head = new Node(rhsPtr->data);
-  Node* current = head;
-  rhsPtr = rhsPtr->next;
+  Node* rhsPtr = rhs.head.get();
+  head = std::make_unique<Node>(rhsPtr->data);
+  Node* current = head.get();
+  rhsPtr = rhsPtr->next.get();
   while (rhsPtr) {
-    current->next = new Node(rhsPtr->data);
-    current = current->next;
-    rhsPtr = rhsPtr->next;
+    current->next = std::make_unique<Node>(rhsPtr->data);
+    current = current->next.get();
+    rhsPtr = rhsPtr->next.get();
   }
   return *this;
 }
@@ -47,29 +48,26 @@ StackLst& StackLst::operator=(StackLst&& rhs) noexcept {
   if (this == &rhs) {
     return *this;
   }
-  Clear();
-  head = rhs.head;
+  head = std::move(rhs.head);
   rhs.head = nullptr;
   return *this;
 }
 
 bool StackLst::IsEmpty() const noexcept {
-  return head == nullptr;
+  return !head;
 }
 
 void StackLst::Pop() noexcept {
   if (!head) {
     return;
   }
-  Node* temp = head;
-  head = head->next;
-  delete temp;
+  head = std::move(head->next);
 }
 
 void StackLst::Push(const Complex& val) {
-  Node* newNode = new Node(val);
-  newNode->next = head;
-  head = newNode;
+  auto newNode = std::make_unique<Node>(val);
+  newNode->next = std::move(head);
+  head = std::move(newNode);
 }
 
 Complex& StackLst::Top() {
@@ -87,9 +85,5 @@ const Complex& StackLst::Top() const {
 }
 
 void StackLst::Clear() noexcept {
-  while (head) {
-    Node* temp = head;
-    head = head->next;
-    delete temp;
-  }
+  head = nullptr;
 }

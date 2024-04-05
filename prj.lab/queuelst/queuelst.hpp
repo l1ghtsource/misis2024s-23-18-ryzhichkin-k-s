@@ -4,14 +4,14 @@
 #define QUEUELST_HPP
 
 #include <complex/complex.hpp>
-
+#include <memory>
 #include <cstddef>
 
 class QueueLst {
 public:
   QueueLst() = default;
-  QueueLst(const QueueLst&);
-  QueueLst(QueueLst&&) noexcept;
+  QueueLst(const QueueLst& other);
+  QueueLst(QueueLst&& other) noexcept;
 
   ~QueueLst();
 
@@ -32,10 +32,10 @@ public:
 private:
   struct Node {
     Complex data;
-    Node* next = nullptr;
+    std::unique_ptr<Node> next;
     Node(Complex v) : data(v), next(nullptr) {}
   };
-  Node* head = nullptr;
+  std::unique_ptr<Node> head = nullptr;
   Node* tail = nullptr;
 };
 
