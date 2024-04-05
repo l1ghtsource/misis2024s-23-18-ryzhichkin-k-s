@@ -12,7 +12,6 @@ public:
   StackArr() = default;
   StackArr(const StackArr& rhs);
   StackArr(StackArr&& rhs) noexcept;
-  StackArr(const Complex& rhs);
 
   ~StackArr();
 
@@ -25,16 +24,15 @@ public:
 
   void Push(const Complex& val);
 
-  Complex& Top();
-  const Complex& Top() const;
+  Complex& Top() &;
+  const Complex& Top() const &;
 
   void Clear() noexcept;
 
 private:
   std::ptrdiff_t size_ = 0;
-  std::ptrdiff_t capacity_ = 0;
+  std::ptrdiff_t i_top_ = -1;
   Complex* data_ = nullptr;
-  Complex* head_ = nullptr;
 };
 
 #endif

@@ -3,134 +3,94 @@
 #include <stdexcept>
 
 StackArr::StackArr(const StackArr& rhs)
-  : size_{ rhs.size_ },
-  capacity_{ rhs.capacity_ },
-  data_{ new Complex[rhs.capacity_] },
-  head_{ data_ + rhs.size_ - 1 } {
-  std::copy(rhs.data_, rhs.data_ + rhs.capacity_, data_);
+  : i_top_(rhs.i_top_) {
+  if (!rhs.IsEmpty()) {
+    size_ = ((i_top_ + 1) / 4 + 1) * 4;
+    data_ = new Complex[size_];
+    std::copy(rhs.data_, rhs.data_ + i_top_ + 1, data_);
+  }
 }
 
-StackArr::StackArr(const Complex& rhs)
-  : size_{ 1 }, 
-  capacity_{ 1 }, 
-  data_{ new Complex[1] }, 
-  head_{ data_ } {
-  *head_ = rhs;
-}
-
-StackArr::StackArr(StackArr&& rhs) noexcept
-  : size_{ rhs.size_ },
-  capacity_{ rhs.capacity_ },
-  data_{ rhs.data_ },
-  head_{ rhs.head_ } {
-  rhs.data_ = nullptr;
-  rhs.head_ = nullptr;
-  rhs.size_ = 0;
-  rhs.capacity_ = 0;
+StackArr::StackArr(StackArr&& rhs) noexcept {
+  std::swap(rhs.size_, size_);
+  std::swap(rhs.i_top_, i_top_);
+  std::swap(rhs.data_, data_);
 }
 
 StackArr::~StackArr() {
-  size_ = 0;
-  capacity_ = 0;
-
   delete[] data_;
-  head_ = nullptr;
 }
 
 StackArr& StackArr::operator=(const StackArr& rhs) {
   if (this != &rhs) {
-    if (capacity_ < rhs.capacity_) {
-      delete[] data_;
-      capacity_ = rhs.capacity_;
-      data_ = new Complex[capacity_];
+    if (rhs.IsEmpty()) {
+      Clear();
     }
-
-    size_ = rhs.size_;
-    std::copy(rhs.data_, rhs.data_ + size_, data_);
-    head_ = data_ + size_;
+    if (size_ <= rhs.i_top_) {
+      size_ = (rhs.i_top_ + 4) / 4 * 4;
+      Complex* buf = new Complex[size_];
+      std::swap(data_, buf);
+      delete[] buf;
+    }
+    i_top_ = rhs.i_top_;
+    std::copy(rhs.data_, rhs.data_ + i_top_ + 1, data_);
   }
   return *this;
 }
 
 StackArr& StackArr::operator=(StackArr&& rhs) noexcept {
   if (this != &rhs) {
-    delete[] data_;
-
-    size_ = rhs.size_;
-    capacity_ = rhs.capacity_;
-    data_ = rhs.data_;
-    head_ = rhs.head_;
-
-    rhs.size_ = 0;
-    rhs.capacity_ = 0;
-    rhs.data_ = nullptr;
-    rhs.head_ = nullptr;
+    if (!rhs.IsEmpty()) {
+      std::swap(size_, rhs.size_);
+      std::swap(i_top_, rhs.i_top_);
+      std::swap(data_, rhs.data_);
+    }
+    else {
+      Clear();
+    }
   }
   return *this;
 }
 
 bool StackArr::IsEmpty() const noexcept {
-  return (size_ == 0);
+  return i_top_ < 0;
 }
 
 void StackArr::Pop() noexcept {
   if (!IsEmpty()) {
-    size_ -= 1;
-    head_ -= 1;
-    if (head_ == 0) {
-      head_ = nullptr;
-    }
+    i_top_ -= 1;
   }
 }
 
 void StackArr::Push(const Complex& val) {
-  if (IsEmpty()) {
-    if (capacity_ == 0) {
-      data_ = new Complex[1];
-    }
-
+  if (nullptr == data_) {
     size_ = 1;
-    capacity_ = std::max(static_cast<ptrdiff_t>(1), capacity_);
-    head_ = data_;
-    *head_ = val;
-
-    return;
+    data_ = new Complex[size_];
   }
-
-  if (size_ == capacity_) {
-    capacity_ *= 2;
-
-    Complex* temp = new Complex[capacity_];
-    std::copy(data_, data_ + size_, temp);
-
-    delete[] data_;
-    data_ = temp;
-    head_ = data_ + size_;
-    size_++;
-    *head_ = val;
-    return;
+  else if (size_ == i_top_ + 1) {
+    auto buf = new Complex[size_ * 2];
+    std::copy(data_, data_ + size_, buf);
+    std::swap(data_, buf);
+    delete[] buf;
+    size_ *= 2;
   }
-
-  size_++;
-  head_++;
-  *head_ = val;
+  data_[++i_top_] = val;
 }
 
-Complex& StackArr::Top() {
+Complex& StackArr::Top() & {
   if (IsEmpty()) {
     throw std::logic_error("StackArr - try get top from empty stack.");
   }
-  return *head_;
+  return data_[i_top_];
 }
 
-const Complex& StackArr::Top() const {
+const Complex& StackArr::Top() const & {
   if (IsEmpty()) {
     throw std::logic_error("StackArr - try get top from empty stack.");
   }
-  return *head_;
+  return data_[i_top_];
 }
 
 void StackArr::Clear() noexcept {
-  size_ = 0;
-  head_ = nullptr;
+  i_top_ = -1;
 };
