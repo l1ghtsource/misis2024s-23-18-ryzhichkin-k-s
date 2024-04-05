@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <iosfwd>
 #include <algorithm>
 
 class BitSet {
@@ -37,6 +38,28 @@ public:
   bool Get(uint32_t idx) const;
   void Set(uint32_t idx, const bool val);
   void Fill(const bool val) noexcept;
+
+  class BitAccessor {
+  public:
+    BitAccessor(BitSet& bitset, uint32_t index) : bitset_(bitset), index_(index) {}
+
+    operator bool() const {
+      return bitset_.Get(index_);
+    }
+
+    BitAccessor& operator=(bool val) {
+      bitset_.Set(index_, val);
+      return *this;
+    }
+
+  private:
+    BitSet& bitset_;
+    uint32_t index_;
+  };
+
+  BitAccessor operator[](uint32_t index) {
+    return BitAccessor(*this, index);
+  }
 
 private:
   uint32_t size_ = 0;
