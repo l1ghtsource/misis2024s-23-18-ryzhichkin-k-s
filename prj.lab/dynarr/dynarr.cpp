@@ -5,18 +5,18 @@ DynArr::DynArr(const DynArr& rhs)
   std::copy(rhs.data_.get(), rhs.data_.get() + rhs.size_, data_.get());
 }
 
-DynArr::DynArr(DynArr&& other) noexcept
-  : size_(other.size_), capacity_(other.capacity_), data_(std::move(other.data_)) {
-  other.size_ = 0;
-  other.capacity_ = 0;
+DynArr::DynArr(DynArr&& other) noexcept {
+  std::swap(capacity_, other.capacity_);
+  std::swap(size_, other.size_);
+  std::swap(data_, other.data_);
 }
 
 DynArr::DynArr(const ptrdiff_t size)
-  : size_(size), capacity_(size), data_(std::make_unique<float[]>(size)) {
+  : size_(size), capacity_(size) {
   if (size <= 0) {
     throw std::invalid_argument("Zero size is not allowed in DynArr ctor");
   }
-  std::fill(data_.get(), data_.get() + size, 0.0f);
+  data_ = std::make_unique<float[]>(capacity_);
 }
 
 DynArr::~DynArr() = default;
@@ -47,14 +47,16 @@ void DynArr::Resize(const ptrdiff_t size) {
   if (size <= 0) {
     throw std::invalid_argument("Negative size is not allowed in DynArr");
   }
-  if (size > capacity_) {
+  if (size < size_) {
+    size_ = size;
+  }
+  else {
     int new_capacity = size * 2;
     auto new_data = std::make_unique<float[]>(new_capacity);
     std::copy(data_.get(), data_.get() + size_, new_data.get());
     data_ = std::move(new_data);
     capacity_ = new_capacity;
   }
-  size_ = size;
 }
 
 float& DynArr::operator[](const ptrdiff_t idx) {

@@ -20,17 +20,17 @@ public:
   DynArr& operator=(const DynArr& rhs);
   DynArr& operator=(DynArr&& rhs) noexcept;
 
-  [[nodiscard]] ptrdiff_t Size() const noexcept { return size_; }
+  ptrdiff_t Size() const noexcept { return size_; }
 
   void Resize(const ptrdiff_t size);
 
-  [[nodiscard]] float& operator[](const ptrdiff_t idx);
-  [[nodiscard]] const float& operator[](const ptrdiff_t idx) const;
+  float& operator[](const ptrdiff_t idx);
+  const float& operator[](const ptrdiff_t idx) const;
 
 private:
   ptrdiff_t size_ = 0;
   ptrdiff_t capacity_ = 0;
-  std::unique_ptr<float[]> data_ = nullptr;
+  std::unique_ptr<float[]> data_ = 0;
 };
 
 std::ostream& operator<<(std::ostream& out, DynArr a);
