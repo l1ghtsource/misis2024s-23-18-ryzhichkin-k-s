@@ -14,6 +14,11 @@
 
 ## План на 08.04.2024 — 14.04.2024
 
-- исправить STATUS: lab dynarr_m - test-failed [~~i hope done - 12.04.2024 21:57]
+- исправить STATUS: lab dynarr_m - test-failed [~~i hope done - 12.04.2024 21:57~~] -> [TODO]
 - по возможности сделать ввод/вывод в bitset [TODO]
-- спать
+- ~~спать~~
+
+## План на 15.04.2024 — 21.04.2024
+
+- исправить ошибки в dynarr [TODO]
+- сделать templates в библиотеках [TODO]
