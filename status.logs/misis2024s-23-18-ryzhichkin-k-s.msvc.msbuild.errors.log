@@ -1,1 +1,1 @@
-    33>LINK : fatal error LNK1181: cannot open input file 'numbertheory.lib' [D:\projects\misis2023f-23-check\misis2024s-23-18-ryzhichkin-k-s\build.check\prj.test\test_numbertheory.vcxproj]
+    37>LINK : fatal error LNK1181: не удается открыть входной файл "numbertheory.lib" [D:\projects\misis2023f-23-check\misis2024s-23-18-ryzhichkin-k-s\build.check\prj.test\test_numbertheory.vcxproj]
